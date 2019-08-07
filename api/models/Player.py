@@ -9,4 +9,9 @@ class Player:
         self.handCards.append(card)
 
     def put_card(self):
-        return self.handCards.pop()
+        card_to_play = self.handCards.pop()
+
+
+    def show_hand(self):
+        for card in self.handCards:
+            print(card)
