@@ -6,6 +6,9 @@ class Card:
         self.value = value
         self.suit = suit
 
+    def __str__(self):
+        return f"{self.value} of {self.get_str_suit()}"
+
     def is_same_suit(self, other):
         return self.suit == other.suit
 
@@ -23,7 +26,5 @@ class Card:
             return "Diamonds"
         elif self.suit == Suits.HEARTS:
             return "Hearts"
-        else: return "Spades"
-
-    def __str__(self):
-        return "{} of {}".format(self.value, self.get_str_suit())
+        else:
+            return "Spades"

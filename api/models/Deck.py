@@ -22,7 +22,7 @@ class Deck:
 
     def draw_hand(self):
         hand = []
-        for i in range(5):
+        for i in range(1):
             hand.append(self.draw_card())
         return hand
 
@@ -38,14 +38,14 @@ class UsedStack:
     def __init__(self):
         self.cards = []
 
-    def played_card(self, card):
+    def use_card(self, card):
         self.cards.append(card)
 
-    def get_current_card(self):
+    def get_top_card(self):
         return self.cards[-1]
 
     def recycle_used_stack(self, deck):
-        top_card = self.cards.pop()
+        top_card = self.cards.pop(-1)
         deck.recycle_deck(self.cards)
         self.cards.clear()
         self.cards.append(top_card)
