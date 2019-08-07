@@ -29,10 +29,15 @@ def users_event():
 
 
 def rooms_event():
-    return json.dumps({"type": "rooms_names", "names": [x.name for x in ROOMS]})
+    return json.dumps({
+        "type": "rooms_names",
+        "rooms": [
+            {"name": x.name, "count": len(x.players)} for x in ROOMS
+        ]
+    })
 
 
-async def notify_users_about_rooms():
+def notify_users_about_rooms():
     if USERS:  # asyncio.wait doesn't accept an empty list
         message = rooms_event()
         await asyncio.wait([user.send(message) for user in USERS])
@@ -70,6 +75,7 @@ async def counter(websocket, path):
                 room = Room(player)
                 ROOMS.append(room)
                 await notify_users_about_rooms()
+
             if data["action"] == "minus":
                 STATE["value"] -= 1
                 await notify_state()
