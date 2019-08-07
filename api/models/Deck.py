@@ -1,4 +1,4 @@
-from api.models.Card import Card
+from models.Card import Card
 import random
 
 
@@ -11,7 +11,7 @@ class Deck:
 
     def build(self):
         for suit in ["Spades", "Hearts", "Clubs", "Diamonds"]:
-            for value in ["2","3", "4", "5", "6","7", "8", "9", "T", "J", "Q", "K", "A"]:
+            for value in ["2", "3", "4", "5", "6", "7", "8", "9", "T", "J", "Q", "K", "A"]:
                 self.cards.append(Card(value, suit))
 
     def shuffle(self):
@@ -28,6 +28,3 @@ class Deck:
 
     def copyDeck(self, other):
         other.cards = self.cards
-
-
-
