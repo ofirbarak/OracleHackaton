@@ -1,26 +1,57 @@
 import React from 'react';
-import logo from './logo.svg';
 import './App.css';
+import HomePage from './HomePage';
+import WatingRoom from './WatingRoom';
+import openSocket from 'socket.io-client';
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+
+class App extends React.Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            currentPage: 'HomePage'
+        };
+
+        this.handleChange = this.handleChange.bind(this);
+        this.createRoom = this.createRoom.bind(this);
+        this.state.socket = openSocket('http://localhost');
+
+        this.state.socket.on('room_data', )
+    }
+
+    handleChange(key) {
+        return (value) => this.setState({ [key]: value });
+    }
+
+    createRoom(){
+        this.setState({currentPage: 'WatingRoom'});
+        console.log(this.state.playerName);
+        this.state.socket.emit('create_room', {action: this.state.playerName})
+    }
+
+    render() {
+        return (
+            <div>
+                {this.state.currentPage == 'HomePage' ?
+                    <div>
+                        <div class="background-image"></div>
+                        <div class="bg-text">
+                            <HomePage 
+                                changePage={this.handleChange('currentPage')}
+                                changePlayerName={this.handleChange('playerName')}
+                                createRoom={this.createRoom}/>
+                        </div>
+                    </div> :
+                    null}
+                {this.state.currentPage == 'WatingRoom' ?
+                    <div>
+                        <WatingRoom />
+                    </div> :
+                    null }
+
+            </div>
+        );
+    }
 }
 
 export default App;

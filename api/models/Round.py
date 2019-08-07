@@ -6,3 +6,5 @@ class Round:
         self.players = []
         self.deck = Deck()
         self.usedStack = Deck()
+        self.rules = rules
+        self.turn = 0
