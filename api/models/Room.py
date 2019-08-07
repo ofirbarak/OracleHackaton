@@ -1,21 +1,13 @@
 from models.Round import Round
+from models.Rules import *
 
 
 class Room:
     def __init__(self, creator):
         self.players = [creator]
         self.round = None
-        self.rules = [card_suit_rule]
+        self.rules = [rule_cards_suit, rule_ace_card, rule_eight_card, rule_three_card]
         self.name = creator.name + " room"
 
     def create(self, players):
         self.round = Round(players, self.rules)
-
-
-def card_suit_rule(card, used_stack, player):
-    if card == 0:
-        return True, round_unchanged
-    return False, round_unchanged
-
-
-def round_unchanged(round_instance): return round_instance

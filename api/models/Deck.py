@@ -41,7 +41,7 @@ class UsedStack:
     def played_card(self, card):
         self.cards.append(card)
 
-    def get_current_card(self):
+    def get_top_card(self):
         return self.cards[-1]
 
     def recycle_used_stack(self, deck):

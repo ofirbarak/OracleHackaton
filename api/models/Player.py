@@ -4,9 +4,9 @@ class Player:
         self.hand_cards = []
         self.websocket = websocket
 
-    def draw(self, deck):
-        card = deck.drawCard()
-        self.handCards.append(card)
+    def draw_card(self, deck):
+        card = deck.draw_card()
+        self.hand_cards.append(card)
 
     def played_card(self, card):
         self.hand_cards.remove(card)
