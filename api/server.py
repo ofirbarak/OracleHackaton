@@ -12,16 +12,8 @@ from models.Room import Room
 
 logging.basicConfig()
 
-STATE = {"value": 0}
-
 ROOMS = list()
-
-USERS = set()
 LONELY_USERS = list()
-
-
-def state_event():
-    return json.dumps({"type": "state", **STATE})
 
 
 def users_event():
@@ -38,30 +30,13 @@ def rooms_event():
 
 
 async def notify_users_about_rooms():
-    if USERS:  # asyncio.wait doesn't accept an empty list
+    if LONELY_USERS:  # asyncio.wait doesn't accept an empty list
         message = rooms_event()
-        await asyncio.wait([user.send(message) for user in USERS])
-
-
-async def notify_state():
-    if USERS:  # asyncio.wait doesn't accept an empty list
-        message = state_event()
-        await asyncio.wait([user.send(message) for user in USERS])
-
-
-async def notify_users():
-    if USERS and LONELY_USERS:  # asyncio.wait doesn't accept an empty list
-        message = users_event()
-        await asyncio.wait([user.send(message) for user in USERS])
+        await asyncio.wait([user.send(message) for user in LONELY_USERS])
 
 
 async def register(websocket):
     LONELY_USERS.append(websocket)
-    USERS.add(websocket)
-
-
-async def unregister(websocket):
-    USERS.remove(websocket)
 
 
 async def counter(websocket, path):
@@ -75,17 +50,19 @@ async def counter(websocket, path):
                 room = Room(player)
                 ROOMS.append(room)
                 await notify_users_about_rooms()
+            elif data["action"] == "join_room":
+                player_name = data["player_name"];
+                player = next((x for x in LONELY_USERS if x.name == player_name), None)
+                room_name = data["room_name"];
+                room = next((x for x in ROOMS if x.name == room_name), None)
+                room.add_player(player)
 
-            if data["action"] == "minus":
-                STATE["value"] -= 1
-                await notify_state()
-            elif data["action"] == "plus":
-                STATE["value"] += 1
-                await notify_state()
+
             else:
                 logging.error("unsupported event: {}", data)
     finally:
-        await unregister(websocket)
+        logging.info("unregistered");
+    #     await unregister(websocket)
 
 
 start_server = websockets.serve(counter, "localhost", 6789)

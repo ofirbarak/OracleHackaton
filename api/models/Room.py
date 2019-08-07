@@ -8,6 +8,11 @@ class Room:
         self.rules = [card_suit_rule]
         self.name = creator.name + " room"
 
+    def add_player(self, player):
+        self.players.append(player)
+        for player in self.players:
+            player.notify_about_players_in_room(self.players)
+
     def create(self, players):
         self.round = Round(players, self.rules)
 
