@@ -14,3 +14,12 @@ class Player:
     def show_hand(self):
         for card in self.hand_cards:
             print(card)
+
+    def get_card_back(self, card):
+        self.hand_cards.append(card)
+
+    def is_won(self):
+        return len(self.hand_cards) == 0
+
+    def define_rule(self):
+        return Rule()
