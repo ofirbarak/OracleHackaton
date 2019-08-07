@@ -2,13 +2,14 @@ import React from 'react';
 import Button from 'react-bootstrap/Button';
 import InputGroup from 'react-bootstrap/InputGroup';
 import FormControl from 'react-bootstrap/FormControl';
+import Container from 'react-bootstrap/Container';
 import logo from './logo.jpg';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 
 function HomePage() {
   return (
-    <div class="container justify-content-center">
+    <Container>
       <Row className="justify content-md-center">
         <Col>
           <img src={logo} class="rounded"/>
@@ -25,7 +26,7 @@ function HomePage() {
           <Button>create game</Button>
         </Col>
       </Row>
-    </div>
+    </Container>
   );
 }
 
