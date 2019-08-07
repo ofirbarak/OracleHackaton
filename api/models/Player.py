@@ -1,4 +1,3 @@
-from models.Rule import Rule
 import asyncio
 import json
 
