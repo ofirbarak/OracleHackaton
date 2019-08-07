@@ -45,7 +45,7 @@ async def notify_users():
 
 
 async def register(websocket):
-    LONELY_USERS.add(websocket)
+    LONELY_USERS.append(websocket)
     USERS.add(websocket)
     await notify_users()
 
