@@ -4,12 +4,13 @@ import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/styles';
 import Grid from '@material-ui/core/Grid';
 import TextField from '@material-ui/core/TextField';
+import { Typography } from '@material-ui/core';
 
 
 const styles = theme => ({
     root: {
         flexGrow: 1,
-        maxWidth: 600,
+        maxWidth: 400,
         margin: '0 auto',
         textAlign: 'center',
     },
@@ -21,7 +22,9 @@ const styles = theme => ({
         margin: '0 auto',
     },
     headline: {
-        color: 'black'
+        color: 'black',
+        fontSize: 50,
+        fontFamily: '"Comic Sans"'
     },
 });
 
@@ -40,7 +43,7 @@ class HomePage extends React.Component {
     render() {
         const { classes } = this.props;
         return (
-            <div>
+            <div className={classes.root}>
                 <Grid
                     container
                     spacing={4}
@@ -49,7 +52,7 @@ class HomePage extends React.Component {
                     className={classes.root}>
 
                     <Grid item>
-                        <h1 className={classes.headline}>Play Mau Now</h1>
+                        <Typography className={classes.headline}>Play Mau Now</Typography>
                     </Grid>
                     <Grid item xs={12}>
                         <TextField
@@ -62,7 +65,7 @@ class HomePage extends React.Component {
                         <Grid item xs={6}>
                             <Button size="lg" onClick={()=>this.props.pickRoom()}>Join a game</Button>
                         </Grid>
-                        <Grid item xs={6} container alignItems="center">
+                        <Grid item xs={6}>
                             <Button size="lg" onClick={()=>this.props.createRoom()}>Create a game</Button>
                         </Grid>
                     </Grid>

@@ -37,7 +37,7 @@ class WatingRoom extends React.Component {
     renderUser(user) {
         const { classes } = this.props;
         return (
-            <Avatar className={classes.avatar}>user</Avatar>
+            <Avatar className={classes.avatar}>{user}</Avatar>
         );
     }
 

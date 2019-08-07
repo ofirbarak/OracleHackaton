@@ -40,7 +40,7 @@ class PickRoom extends React.Component {
                 <ButtonBase
                     onClick={() => this.sendSelectedRoom(room.name)}
                 >
-                <Card className={classes.card}>
+                <Card>
                     <CardContent>
                         <Typography gutterBottom variant="h5" component="h2">
                             {room.name}
@@ -60,7 +60,7 @@ class PickRoom extends React.Component {
         return (
             <Grid
                 container
-                spacing={4}
+                spacing={2}
                 alignItems="center"
                 justify="center"
                 className={classes.root}>
