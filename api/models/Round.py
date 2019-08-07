@@ -13,6 +13,7 @@ class Round:
     def start(self):
         for player in self.players:
             player.handCards = self.deck.draw_hand()
+
         # todo send through sockets the player.handCards
 
     def end(self):
@@ -40,4 +41,4 @@ class Round:
         self.players[self.turn].draw()  # add one more card to hand of player
 
     def forward_turn(self):
-        self.turn += 1;
+        self.turn += 1
