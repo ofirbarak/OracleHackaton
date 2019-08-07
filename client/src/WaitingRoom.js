@@ -1,6 +1,7 @@
 import React from 'react';
 import GameRoom from './GameRoom';
-class JoinGame extends React.Component {
+
+class WaitingRoom extends React.Component {
     constructor(props) {
         super(props);
     }
@@ -14,4 +15,4 @@ class JoinGame extends React.Component {
     }
 }
 
-export default JoinGame;
+export default WaitingRoom;

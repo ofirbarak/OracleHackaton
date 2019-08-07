@@ -131,6 +131,6 @@ const cardByTypeAndNum = (type, number) => {
 export default  (props) => {
     return (
         <Card style={{'height':'190px', 'width':'130px'}} >
-            <Card.Img className='card card.flip front flip' onClick={props.onClick} src={cardByTypeAndNum(props.type, props.number)}/>
+            <Card.Img onClick={props.onClick} src={cardByTypeAndNum(props.type, props.number)}/>
         </Card>)
 }
