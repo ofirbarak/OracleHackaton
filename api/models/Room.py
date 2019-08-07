@@ -6,6 +6,7 @@ class Room:
         self.players = [creator]
         self.round = None
         self.rules = [card_suit_rule]
+        self.name = creator.name + " room"
 
     def create(self, players):
         self.round = Round(players, self.rules)
