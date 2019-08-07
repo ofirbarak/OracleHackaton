@@ -1,5 +1,6 @@
-from api.models.Card import Card
+from models.Card import Card
 import random
+from models.suits import Suits
 
 
 class Deck:
@@ -10,8 +11,8 @@ class Deck:
         return self.cards.__len__()
 
     def build(self):
-        for suit in ["Spades", "Hearts", "Clubs", "Diamonds"]:
-            for value in ["2","3", "4", "5", "6","7", "8", "9", "T", "J", "Q", "K", "A"]:
+        for suit in iter(Suits):
+            for value in range(1, 14):
                 self.cards.append(Card(value, suit))
 
     def shuffle(self):
