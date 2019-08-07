@@ -13,6 +13,7 @@ class Round:
     def start(self):
         for player in self.players:
             player.handCards = self.deck.draw_hand()
+            player.notify_about_start_round()
 
         # todo send through sockets the player.handCards
 
