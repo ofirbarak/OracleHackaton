@@ -10,6 +10,7 @@ import CardMedia from '@material-ui/core/CardMedia';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 import Grid from '@material-ui/core/Grid';
+import ButtonBase from '@material-ui/core/ButtonBase';
 
 
 const styles = theme => ({
@@ -21,29 +22,35 @@ const styles = theme => ({
     },
 });
 
-class WaitingRoom extends React.Component {
+class PickRoom extends React.Component {
     constructor(props) {
         super(props);
+
+        this.selectedRoomName = this.sendSelectedRoom.bind(this);
     }
 
-    sendSelectedRoom(event) {
-
+    sendSelectedRoom(roomName) {
+        console.log(roomName);
     }
 
     renderRoom(room) {
         const { classes } = this.props;
         return (
-            <Grid item xs={4}>
+            <Grid item xs={4} key={room.name} >
+                <ButtonBase
+                    onClick={() => this.sendSelectedRoom(room.name)}
+                >
                 <Card className={classes.card}>
                     <CardContent>
                         <Typography gutterBottom variant="h5" component="h2">
                             {room.name}
-                    </Typography>
+                        </Typography>
                         <Typography variant="body2" color="textSecondary" component="p">
                             {room.count} users in room
                     </Typography>
                     </CardContent>
                 </Card>
+                    </ButtonBase>
             </Grid>
         );
     }
@@ -57,7 +64,7 @@ class WaitingRoom extends React.Component {
                 alignItems="center"
                 justify="center"
                 className={classes.root}>
-                    
+
                 <Grid item xs={12}>
                     <h1>Pick A Room</h1>
                 </Grid>
@@ -68,10 +75,10 @@ class WaitingRoom extends React.Component {
     }
 }
 
-WaitingRoom.propTypes = {
+PickRoom.propTypes = {
     classes: PropTypes.object.isRequired,
     rooms: PropTypes.array.isRequired,
     socket: PropTypes.object.isRequired,
 };
 
-export default withStyles(styles)(WaitingRoom);
+export default withStyles(styles)(PickRoom);
