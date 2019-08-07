@@ -60,6 +60,7 @@ async def counter(websocket, path):
                 room_name = data["room_name"]
                 room = next((x for x in ROOMS if x.name == room_name), None)
                 await room.add_player(player)
+                await notify_users_about_rooms()
 
             elif data["action"] == "start_game":
                 room_name = data["room_name"]
