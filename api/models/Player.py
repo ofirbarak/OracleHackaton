@@ -39,6 +39,6 @@ class Player:
     async def notify_about_start_round(self):
         message = json.dumps({
             "type": "game_started",
-            "hand_cards": self.hand_cards
+            "hand_cards": [card.to_json() for card in self.hand_cards]
         })
         await asyncio.wait([self.websocket.send(message)])

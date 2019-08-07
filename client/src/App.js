@@ -39,7 +39,7 @@ class App extends React.Component {
                 this.setState({ rooms: data.rooms });
                 break;
             case 'game_started':
-                this.setState({ currentPage: 'GameRoom',handCards:data.handCards });
+                this.setState({ currentPage: 'GameRoom', handCards: data.hand_cards });
                 break;
             case 'add_player_to_room':
                 this.setState({ room_users: data.players });
@@ -65,10 +65,10 @@ class App extends React.Component {
             player_name: this.state.playerName,
             room_name: roomName
         }))
-        this.setState({ currentPage: "WaitingRoom",roomName });
+        this.setState({ currentPage: "WaitingRoom", roomName });
     }
 
-    letsPlay = ()=> {
+    letsPlay = () => {
         this.state.socket.send(JSON.stringify({
             action: "start_game",
             room_name: this.state.roomName
@@ -93,7 +93,7 @@ class App extends React.Component {
                     <div>
                         <PickRoom
                             rooms={this.state.rooms}
-                            pickRoom={this.pickRoom}/>
+                            pickRoom={this.pickRoom} />
                     </div> :
                     null}
                 {this.state.currentPage == 'WaitingRoom' ?
@@ -101,14 +101,14 @@ class App extends React.Component {
                         <WatingRoom
                             room_users={this.state.room_users}
                             letsPlay={this.letsPlay}
-                            changePage={this.handleChange('currentPage')}/>
+                            changePage={this.handleChange('currentPage')} />
                     </div> :
                     null}
                 {this.state.currentPage == 'GameRoom' ?
                     <div>
                         <GameRoom
                             handCards={this.state.handCards}
-                            changePage={this.handleChange('currentPage')}/>
+                            changePage={this.handleChange('currentPage')} />
                     </div> :
                     null}
 

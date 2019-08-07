@@ -1,3 +1,5 @@
+import json
+
 from models.suits import Suits
 
 
@@ -24,6 +26,12 @@ class Card:
         elif self.suit == Suits.HEARTS:
             return "Hearts"
         else: return "Spades"
+
+    def to_json(self):
+        return json.dumps({
+            "type": self.suit,
+            "number": self.value
+        })
 
     def __str__(self):
         return "{} of {}".format(self.value, self.get_str_suit())
