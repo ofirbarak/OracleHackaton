@@ -8,13 +8,13 @@ import openSocket from 'socket.io-client';
 
 const enumToType = (enumName) => {
     if (enumName === 0)
-        return 'hearts'
+        return 'heart'
     if (enumName === 1)
-        return 'spades'
+        return 'spade'
     if (enumName === 2)
-        return 'diamonds'
+        return 'diamond'
     if (enumName === 3)
-        return 'clubs'
+        return 'club'
     return undefined
 }
 
