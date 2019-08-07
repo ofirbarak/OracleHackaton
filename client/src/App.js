@@ -71,7 +71,7 @@ class App extends React.Component {
                 {this.state.currentPage == 'HomePage' ?
                     <div>
                         <div className="background-image"></div>
-                        <div className="bg-text">
+                        <div className="bg-text transparant-backround">
                             <HomePage
                                 changePage={this.handleChange('currentPage')}
                                 changePlayerName={this.handleChange('playerName')}
