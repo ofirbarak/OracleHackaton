@@ -6,6 +6,7 @@ import asyncio
 import json
 import logging
 import websockets
+from Chat.Chat import Chat
 
 from models.Player import Player
 from models.Room import Room
@@ -67,11 +68,8 @@ async def counter(websocket, path):
                 room = Room(player)
                 ROOMS.append(room)
                 await rooms_event()
-            if data["action"] == "minus":
-                STATE["value"] -= 1
-                await notify_state()
-            elif data["action"] == "plus":
-                STATE["value"] += 1
+            elif data["action"] == "chat_message":
+                message = data["message_text"]
                 await notify_state()
             else:
                 logging.error("unsupported event: {}", data)
@@ -82,4 +80,29 @@ async def counter(websocket, path):
 start_server = websockets.serve(counter, "localhost", 6789)
 
 asyncio.get_event_loop().run_until_complete(start_server)
+asyncio.get_event_loop().run_forever()
+
+CHAT_LIST = list()
+async def chat_counter(websocket, path):
+    # register(websocket) sends user_event() to websocket
+    await register(websocket)
+    try:
+        await websocket.send(state_event())
+        async for message in websocket:
+            data = json.loads(message)
+            if data["action"] == "create_chat":
+                chat = Chat(data["team_name"], websocket)
+                CHAT_LIST.append(chat)
+                await rooms_event()
+            elif data["action"] == "get_message":
+                message = data["message_text"]
+                await notify_state()
+            else:
+                logging.error("unsupported event: {}", data)
+    finally:
+        await unregister(websocket)
+
+start_chat_server = websockets.serve(chat_counter, "localhost", 6666)
+
+asyncio.get_event_loop().run_until_complete(start_chat_server)
 asyncio.get_event_loop().run_forever()
