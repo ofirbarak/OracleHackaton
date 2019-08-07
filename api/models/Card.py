@@ -25,11 +25,12 @@ class Card:
             return "Diamonds"
         elif self.suit == Suits.HEARTS:
             return "Hearts"
-        else: return "Spades"
+        else:
+            return "Spades"
 
     def to_json(self):
         return json.dumps({
-            "type": self.suit,
+            "type": self.suit.value,
             "number": self.value
         })
 
