@@ -6,7 +6,7 @@ import Grid from '@material-ui/core/Grid';
 import TextField from '@material-ui/core/TextField';
 
 
-const styles = {
+const styles = theme => ({
     root: {
         flexGrow: 1,
         maxWidth: 600,
@@ -23,7 +23,7 @@ const styles = {
     headline: {
         color: 'black'
     },
-};
+});
 
 class HomePage extends React.Component {
     constructor(props) {
@@ -58,11 +58,11 @@ class HomePage extends React.Component {
                             placeholder="Username"
                             onChange={(event) => this.props.changePlayerName(event.target.value)} />
                     </Grid>
-                    <Grid container xs={12}>
+                    <Grid container item xs={12}>
                         <Grid item xs={6}>
                             <Button size="lg" onClick={()=>this.props.changePage('WaitingRoom')}>Join a game</Button>
                         </Grid>
-                        <Grid item xs={6} alignItems="center">
+                        <Grid item xs={6} container alignItems="center">
                             <Button size="lg" onClick={()=>this.props.createRoom()}>Create a game</Button>
                         </Grid>
                     </Grid>
@@ -73,7 +73,7 @@ class HomePage extends React.Component {
 }
 
 HomePage.propTypes = {
-    class: PropTypes.object.isRequired,
+    classes: PropTypes.object.isRequired,
     changePage: PropTypes.func.isRequired,
     changePlayerName: PropTypes.func.isRequired,
     createRoom: PropTypes.func.isRequired,

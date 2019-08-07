@@ -9,34 +9,42 @@ class App extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            currentPage: 'HomePage'
+            currentPage: 'HomePage',
+            rooms: ['ddd', 'ddsd']
         };
+        // this.state.socket = new WebSocket('ws://localhost:6789/');
 
         this.handleChange = this.handleChange.bind(this);
         this.createRoom = this.createRoom.bind(this);
-        // this.state.socket = openSocket('ws://localhost:6789');
-        // this.state.socket = io('ws://localhost:6789');
-        // this.state.socket = io({
-        //     transports: ['websocket']
-        // });
-        // this.state.socket.openSocket('ws://localhost:6789');
-        this.state.socket = new WebSocket('ws://localhost:6789/');
+        this.handleServerMessages = this.handleServerMessages.bind(this);
 
-        // this.state.socket.on('room_data', )
+        // this.state.socket.onmessage = this.handleServerMessages;
     }
 
     handleChange(key) {
         return (value) => this.setState({ [key]: value });
     }
 
+    handleServerMessages(event) {
+        console.log(event);
+        // data = JSON.parse(event.data);
+        // switch (data.type) {
+        //     case 'group_names':
+        //         this.setState({group_members: data.value});
+        //         break;
+        //     default:
+        //         console.error(
+        //             "unsupported event", data);
+        // }
+    }
+
     createRoom() {
-        this.setState({ currentPage: 'WatingRoom' });
         console.log(this.state.playerName);
-        this.state.socket.send(JSON.stringify({
-            action: "create_room",
-            name: this.state.playerName
-        }));
-        // this.state.socket.emit('create_room', { action: this.state.playerName })
+        this.setState({ currentPage: "WaitingRoom" });
+        // this.state.socket.send(JSON.stringify({
+        //     action: "create_room",
+        //     name: this.state.playerName
+        // }));
     }
 
     render() {
@@ -44,8 +52,8 @@ class App extends React.Component {
             <div>
                 {this.state.currentPage == 'HomePage' ?
                     <div>
-                        <div class="background-image"></div>
-                        <div class="bg-text">
+                        <div className="background-image"></div>
+                        <div className="bg-text">
                             <HomePage
                                 changePage={this.handleChange('currentPage')}
                                 changePlayerName={this.handleChange('playerName')}
@@ -55,7 +63,7 @@ class App extends React.Component {
                     null}
                 {this.state.currentPage == 'WaitingRoom' ?
                     <div>
-                        <WaitingRoom />
+                        <WaitingRoom rooms={this.state.rooms}/>
                     </div> :
                     null}
 
