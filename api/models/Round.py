@@ -6,17 +6,18 @@ class Round:
         self.players = players
         self.rules = rules
         self.deck = Deck()
-        self.usedStack = UsedStack()
+        self.used_stack = UsedStack()
         self.is_clockwise = True
         self.turn = 0
 
     def start(self):
         for player in self.players:
-            player.handCards = self.deck.draw_hand()
+            player.hand_cards = self.deck.draw_hand()
         # todo send through sockets the player.handCards
 
     def end(self):
         pass
+
 
     def play_action(self):
         valid = self.validate_rules()
@@ -34,7 +35,7 @@ class Round:
 
     def operate_user_action(self, card):
         self.deck.remove(card)
-        self.usedStack.push(card)
+        self.used_stack.push(card)
 
     def reject_user_action(self):
         self.players[self.turn].draw()  # add one more card to hand of player
