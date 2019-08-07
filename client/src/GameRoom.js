@@ -1,14 +1,15 @@
 import React from 'react';
 import ListGroup from 'react-bootstrap/ListGroup';
 import Container from 'react-bootstrap/Container';
-import cardsDeck from './images/cardsDeck.jpg';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
-import Card from 'react-bootstrap/Card';
 import PlayingCard from './PlayingCard';
 import clone from 'clone';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import DrawnCards from './DrawnCards';
+import CardsDek from './CardsDek';
+import _ from 'lodash'
 
 
 export default class GameRoom extends React.Component {
@@ -21,22 +22,36 @@ export default class GameRoom extends React.Component {
                 { type: 'heart', number: 11 },
                 { type: 'heart', number: 9 },
                 { type: 'heart', number: 2 }
-            ]
+            ],
+            playedCards: [
+                { type: 'heart', number: 3 },
+                { type: 'heart', number: 6 },
+                { type: 'heart', number: 11 },
+                { type: 'heart', number: 9 },
+                { type: 'heart', number: 2 }
+            ],
+            numOfCardsInDeck:56
 
         };
     }
 
 
     placeCard = (type,number) =>{
-        console.log(`placed ${number} of ${type}`)
-        this.rejectUserAction()
+        toast(`placed ${number} of ${type}`)
+        setTimeout(()=>{
+            const indexToRemove = this.state.myDek.findIndex((curCard)=>(curCard.type===type && curCard.number===number))
+            const newDek = _.remove(this.state.myDek,(cur,index)=>index!==indexToRemove)
+            const newPlayedCards = _.clone(this.state.playedCards)
+            newPlayedCards.push({type,number})
+            this.setState({myDek: newDek,playedCards:newPlayedCards})
+        },100)
     }
     takeCardFromDek = () =>{
         const newArr = clone(this.state.myDek);
         newArr.push({ type: 'heart', number: 6 })
-        this.setState({myDek:newArr})
+        this.setState({myDek:newArr,numOfCardsInDeck:this.state.numOfCardsInDeck-1})
     }
-    rejectUserAction() {
+    rejectUserAction = ()=> {
         toast('ha ha ha ');
     }
     render = () => {
@@ -47,12 +62,10 @@ export default class GameRoom extends React.Component {
                 <br />
                 <Row>
                     <Col>
-                        <Card style={{ 'height': '190px', 'width': '300' }}>
-                            <Card.Img onClick={this.takeCardFromDek} style={{ 'height': '190px', 'width': '300' }} src={cardsDeck} />
-                        </Card>
+                        <CardsDek onClick={this.takeCardFromDek} numOfCardsInDeck={this.state.numOfCardsInDeck} />
                     </Col>
                     <Col>
-                        <PlayingCard type='heart' number={0}></PlayingCard>
+                        <DrawnCards cards={this.state.playedCards}></DrawnCards>
                     </Col>
                     <Col>
                         <ListGroup>

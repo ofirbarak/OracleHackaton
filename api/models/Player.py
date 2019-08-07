@@ -1,4 +1,6 @@
-from models.Rule import Rule
+import asyncio
+import json
+
 
 class Player:
     def __init__(self, name, websocket):
@@ -25,3 +27,15 @@ class Player:
 
     def define_rule(self):
         return Rule()
+
+    @staticmethod
+    def players_in_room_data(players):
+        return json.dumps({
+            "type": "add_player_to_room",
+            "players": [x.name for x in players]
+        })
+
+    async def notify_about_players_in_room(self, players):
+        if players:  # asyncio.wait doesn't accept an empty list
+            message = Player.players_in_room_data(players)
+            await asyncio.wait([self.websocket.send(message)])

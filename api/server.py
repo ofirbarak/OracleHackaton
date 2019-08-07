@@ -12,16 +12,8 @@ from models.Room import Room
 
 logging.basicConfig()
 
-STATE = {"value": 0}
-
 ROOMS = list()
-
-USERS = set()
 LONELY_USERS = list()
-
-
-def state_event():
-    return json.dumps({"type": "state", **STATE})
 
 
 def users_event():
@@ -29,54 +21,50 @@ def users_event():
 
 
 def rooms_event():
-    return json.dumps({"type": "rooms", "names": [x.name for x in LONELY_USERS]})
+    return json.dumps({
+        "type": "rooms_info",
+        "rooms": [
+            {"name": x.name, "count": len(x.players)} for x in ROOMS
+        ]
+    })
 
 
-async def notify_state():
-    if USERS:  # asyncio.wait doesn't accept an empty list
-        message = state_event()
-        await asyncio.wait([user.send(message) for user in USERS])
-
-
-async def notify_users():
-    if USERS and LONELY_USERS:  # asyncio.wait doesn't accept an empty list
-        message = users_event()
-        await asyncio.wait([user.send(message) for user in USERS])
+async def notify_users_about_rooms():
+    if LONELY_USERS:  # asyncio.wait doesn't accept an empty list
+        message = rooms_event()
+        await asyncio.wait([user.send(message) for user in LONELY_USERS])
 
 
 async def register(websocket):
     LONELY_USERS.append(websocket)
-    USERS.add(websocket)
-    await notify_users()
-
-
-async def unregister(websocket):
-    USERS.remove(websocket)
-    await notify_users()
+    await notify_users_about_rooms()
 
 
 async def counter(websocket, path):
     # register(websocket) sends user_event() to websocket
     await register(websocket)
     try:
-        await websocket.send(state_event())
         async for message in websocket:
             data = json.loads(message)
             if data["action"] == "create_room":
                 player = Player(data["name"], websocket)
                 room = Room(player)
                 ROOMS.append(room)
-                await rooms_event()
-            if data["action"] == "minus":
-                STATE["value"] -= 1
-                await notify_state()
-            elif data["action"] == "plus":
-                STATE["value"] += 1
-                await notify_state()
+                await notify_users_about_rooms()
+            elif data["action"] == "join_room":
+                player_name = data["player_name"]
+                player = Player(player_name, websocket)
+                LONELY_USERS.remove(player.websocket)
+                room_name = data["room_name"]
+                room = next((x for x in ROOMS if x.name == room_name), None)
+                await room.add_player(player)
+
+
             else:
                 logging.error("unsupported event: {}", data)
     finally:
-        await unregister(websocket)
+        logging.info("unregistered");
+    #     await unregister(websocket)
 
 
 start_server = websockets.serve(counter, "localhost", 6789)
