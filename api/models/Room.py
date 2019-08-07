@@ -15,9 +15,9 @@ class Room:
         self.players.append(player)
         await asyncio.wait([player.notify_about_players_in_room(self.players) for player in self.players])
 
-    def start_round(self):
+    async def start_round(self):
         self.round = Round(self.players, self.rules)
-        self.round.start()
+        await self.round.start()
 
     def card_suit_rule(self, card, used_stack, player):
         if card == 0:

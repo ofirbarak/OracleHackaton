@@ -2,20 +2,31 @@ import React from 'react';
 import './App.css';
 import HomePage from './HomePage';
 import PickRoom from './PickRoom';
+import GameRoom from './GameRoom'
 import WatingRoom from './WatingRoom';
 import openSocket from 'socket.io-client';
 
+const enumToType = (enumName) => {
+    if (enumName === 0)
+        return 'heart'
+    if (enumName === 1)
+        return 'spade'
+    if (enumName === 2)
+        return 'diamond'
+    if (enumName === 3)
+        return 'club'
+    return undefined
+}
 
 class App extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
             currentPage: 'HomePage',
-            rooms: [{ name: "room1", count: 1 },
-            { name: "room2", count: 3 },
-            { name: "room3", count: 2 },
-            { name: "room4", count: 5 }],
-            room_users: ['dsdsds', 'sdsd', 'sfsdf', 'sdfsdf', 'sdfsdf'],
+            rooms: [],
+            room_users: [],
+            handCards: [],
+            roomName: undefined
         };
         this.state.socket = new WebSocket('ws://localhost:6789/');
 
@@ -37,6 +48,16 @@ class App extends React.Component {
         switch (data.type) {
             case 'rooms_info':
                 this.setState({ rooms: data.rooms });
+                break;
+            case 'game_started':
+                const handCards = data.hand_cards.map((curCard) => {
+                    const curCardAsJson = JSON.parse(curCard);
+                    return {
+                        type: enumToType(curCardAsJson.type),
+                        number: curCardAsJson.number
+                    }
+                })
+                this.setState({ currentPage: 'GameRoom', handCards });
                 break;
             case 'add_player_to_room':
                 this.setState({ room_users: data.players });
@@ -62,7 +83,14 @@ class App extends React.Component {
             player_name: this.state.playerName,
             room_name: roomName
         }))
-        this.setState({ currentPage: "WaitingRoom" });
+        this.setState({ currentPage: "WaitingRoom", roomName });
+    }
+
+    letsPlay = () => {
+        this.state.socket.send(JSON.stringify({
+            action: "start_game",
+            room_name: this.state.roomName
+        }))
     }
 
     render() {
@@ -71,7 +99,7 @@ class App extends React.Component {
                 {this.state.currentPage == 'HomePage' ?
                     <div>
                         <div className="background-image"></div>
-                        <div className="bg-text">
+                        <div className="bg-text transparant-backround">
                             <HomePage
                                 changePage={this.handleChange('currentPage')}
                                 changePlayerName={this.handleChange('playerName')}
@@ -83,14 +111,22 @@ class App extends React.Component {
                     <div>
                         <PickRoom
                             rooms={this.state.rooms}
-                            pickRoom={this.pickRoom}/>
+                            pickRoom={this.pickRoom} />
                     </div> :
                     null}
                 {this.state.currentPage == 'WaitingRoom' ?
                     <div>
                         <WatingRoom
                             room_users={this.state.room_users}
-                            changePage={this.handleChange('currentPage')}/>
+                            letsPlay={this.letsPlay}
+                            changePage={this.handleChange('currentPage')} />
+                    </div> :
+                    null}
+                {this.state.currentPage == 'GameRoom' ?
+                    <div>
+                        <GameRoom
+                            handCards={this.state.handCards}
+                            changePage={this.handleChange('currentPage')} />
                     </div> :
                     null}
 

@@ -24,3 +24,21 @@ class Player:
 
     def is_won(self):
         return len(self.hand_cards) == 0
+
+    def define_rule(self):
+        return Rule()
+
+    async def notify_about_players_in_room(self, players):
+        if players:  # asyncio.wait doesn't accept an empty list
+            message = json.dumps({
+                "type": "add_player_to_room",
+                "players": [x.name for x in players]
+            })
+            await asyncio.wait([self.websocket.send(message)])
+
+    async def notify_about_start_round(self):
+        message = json.dumps({
+            "type": "game_started",
+            "hand_cards": [card.to_json() for card in self.hand_cards]
+        })
+        await asyncio.wait([self.websocket.send(message)])

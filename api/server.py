@@ -64,7 +64,7 @@ async def counter(websocket, path):
             elif data["action"] == "start_game":
                 room_name = data["room_name"]
                 room = next((room for room in ROOMS if room.name == room_name), None)
-                room.start_round()
+                await room.start_round()
 
 
             else:

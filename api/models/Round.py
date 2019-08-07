@@ -1,3 +1,5 @@
+import asyncio
+
 from models.Deck import Deck, UsedStack
 
 
@@ -11,12 +13,11 @@ class Round:
         self.turn = 0
         self.is_round_over = False
 
-    def start(self):
+    async def start(self):
         for player in self.players:
             player.hand_cards = self.deck.draw_hand()
-            player.notify_about_start_round()
         self.used_stack.use_card(self.deck.draw_card())
-        # todo send through sockets the player.handCards
+        await asyncio.wait([player.notify_about_start_round() for player in self.players])
 
     def player_draw_card(self, player):
         player.draw_card(self.deck)

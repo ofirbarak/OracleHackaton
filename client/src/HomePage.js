@@ -15,16 +15,19 @@ const styles = theme => ({
         textAlign: 'center',
     },
     input: {
-        width: 300
+        width: 160
     },
     center: {
         align: 'center',
         margin: '0 auto',
     },
     headline: {
-        color: 'black',
+        color: 'white',
         fontSize: 50,
-        fontFamily: '"Comic Sans"'
+        fontFamily: '"Lacquer", "sans-serif"',
+        backgroundColor: 'dimgrey',
+        borderRadius: '10px',
+        padding: '5px'
     },
 });
 
