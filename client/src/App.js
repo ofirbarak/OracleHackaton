@@ -104,7 +104,7 @@ class App extends React.Component {
                             changePage={this.handleChange('currentPage')}/>
                     </div> :
                     null}
-                {this.state.currentPage == 'WaitingRoom' ?
+                {this.state.currentPage == 'GameRoom' ?
                     <div>
                         <GameRoom
                             handCards={this.state.handCards}
