@@ -33,8 +33,8 @@ class App extends React.Component {
         let data = JSON.parse(event.data);
         console.log(data.names);
         switch (data.type) {
-            case 'rooms_names':
-                this.setState({rooms: data.names});
+            case 'rooms_info':
+                this.setState({rooms: data.rooms});
                 break;
             default:
                 console.error(
@@ -45,10 +45,10 @@ class App extends React.Component {
     createRoom() {
         console.log(this.state.playerName);
         this.setState({ currentPage: "WaitingRoom" });
-    //     this.state.socket.send(JSON.stringify({
-    //         action: "create_room",
-    //         name: this.state.playerName
-    //     }));
+        this.state.socket.send(JSON.stringify({
+            action: "create_room",
+            name: this.state.playerName
+        }));
     }
 
     render() {

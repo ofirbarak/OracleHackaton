@@ -30,14 +30,14 @@ def users_event():
 
 def rooms_event():
     return json.dumps({
-        "type": "rooms_names",
+        "type": "rooms_info",
         "rooms": [
             {"name": x.name, "count": len(x.players)} for x in ROOMS
         ]
     })
 
 
-def notify_users_about_rooms():
+async def notify_users_about_rooms():
     if USERS:  # asyncio.wait doesn't accept an empty list
         message = rooms_event()
         await asyncio.wait([user.send(message) for user in USERS])
