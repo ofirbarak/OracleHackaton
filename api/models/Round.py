@@ -14,6 +14,7 @@ class Round:
     def start(self):
         for player in self.players:
             player.hand_cards = self.deck.draw_hand()
+            player.notify_about_start_round()
         self.used_stack.use_card(self.deck.draw_card())
         # todo send through sockets the player.handCards
 
