@@ -10,7 +10,10 @@ class App extends React.Component {
         super(props);
         this.state = {
             currentPage: 'HomePage',
-            rooms: []
+            rooms: [{name:"room1", count:1},
+                    {name:"room2", count:3},
+                    {name:"room3", count:2},
+                    {name:"room3", count:5}]
         };
         this.state.socket = new WebSocket('ws://localhost:6789/');
 
@@ -42,10 +45,10 @@ class App extends React.Component {
     createRoom() {
         console.log(this.state.playerName);
         this.setState({ currentPage: "WaitingRoom" });
-        this.state.socket.send(JSON.stringify({
-            action: "create_room",
-            name: this.state.playerName
-        }));
+    //     this.state.socket.send(JSON.stringify({
+    //         action: "create_room",
+    //         name: this.state.playerName
+    //     }));
     }
 
     render() {
