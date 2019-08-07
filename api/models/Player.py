@@ -1,3 +1,4 @@
+from models.Rule import Rule
 import asyncio
 import json
 
@@ -5,19 +6,28 @@ import json
 class Player:
     def __init__(self, name, websocket):
         self.name = name
-        self.handCards = []
+        self.hand_cards = []
         self.websocket = websocket
 
-    def draw(self, deck):
+    def draw_card(self, deck):
         card = deck.drawCard()
-        self.handCards.append(card)
+        self.hand_cards.append(card)
 
-    def put_card(self):
-        card_to_play = self.handCards.pop()
+    def played_card(self, card):
+        self.hand_cards.remove()
 
     def show_hand(self):
-        for card in self.handCards:
+        for card in self.hand_cards:
             print(card)
+
+    def get_card_back(self, card):
+        self.hand_cards.append(card)
+
+    def is_won(self):
+        return len(self.hand_cards) == 0
+
+    def define_rule(self):
+        return Rule()
 
     @staticmethod
     def players_in_room_data(players):
