@@ -6,9 +6,13 @@ class Player:
         self.websocket = websocket
 
     def draw(self, deck):
-        for x in range(5):
-            card = deck.drawCard()
-            self.handCards.append(card)
+        card = deck.drawCard()
+        self.handCards.append(card)
 
-    def putCard(self):
-        return self.handCards.pop()
+    def put_card(self):
+        card_to_play = self.handCards.pop()
+
+
+    def show_hand(self):
+        for card in self.handCards:
+            print(card)

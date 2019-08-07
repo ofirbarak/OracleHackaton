@@ -2,7 +2,8 @@ from enum import Enum
 
 
 class Suits(Enum):
-    HEARTS = 1
-    SPADES = 2
-    DIAMONDS = 3
-    CLUBS = 4
+    HEARTS = 0
+    SPADES = 1
+    DIAMONDS = 2
+    CLUBS = 3
+

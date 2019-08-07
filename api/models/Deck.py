@@ -10,7 +10,7 @@ class Deck:
         self.shuffle()
 
     def build(self):
-        for suit in [Suits.Hearts, Suits.Spades, Suits.Diamonds, Suits.Clubs]:
+        for suit in [Suits.HEARTS, Suits.SPADES, Suits.DIAMONDS, Suits.CLUBS]:
             for value in range(1, 14):
                 self.cards.append(Card(value, suit))
 
