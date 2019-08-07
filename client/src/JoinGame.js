@@ -1,5 +1,5 @@
 import React from 'react';
-
+import GameRoom from './GameRoom';
 class JoinGame extends React.Component {
     constructor(props) {
         super(props);
@@ -8,7 +8,7 @@ class JoinGame extends React.Component {
     render(){
         return (
             <div>
-                asds
+                <GameRoom></GameRoom>
             </div>
         );
     }
