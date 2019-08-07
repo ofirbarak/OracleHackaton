@@ -63,7 +63,7 @@ class HomePage extends React.Component {
                             <Button size="lg" onClick={()=>this.props.changePage('JoinGame')}>Join a game</Button>
                         </Grid>
                         <Grid item xs={6} alignItems="center">
-                            <Button size="lg" onClick={()=>this.props.changePage('CreateGame')}>Create a game</Button>
+                            <Button size="lg" onClick={()=>this.props.createRoom()}>Create a game</Button>
                         </Grid>
                     </Grid>
                 </Grid>
@@ -76,6 +76,7 @@ HomePage.propTypes = {
     class: PropTypes.object.isRequired,
     changePage: PropTypes.func.isRequired,
     changePlayerName: PropTypes.func.isRequired,
+    createRoom: PropTypes.func.isRequired,
 };
 
 export default withStyles(styles)(HomePage);

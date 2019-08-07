@@ -1,6 +1,6 @@
 import React from 'react';
 
-class JoinGame extends React.Component {
+class WatingRoom extends React.Component {
     constructor(props) {
         super(props);
     }
@@ -14,4 +14,4 @@ class JoinGame extends React.Component {
     }
 }
 
-export default JoinGame;
+export default WatingRoom;
