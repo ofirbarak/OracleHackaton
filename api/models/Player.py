@@ -26,7 +26,7 @@ class Player:
             "players": [x.name for x in players]
         })
 
-    async def notify_about_players_in_room(players):
+    async def notify_about_players_in_room(self, players):
         if players:  # asyncio.wait doesn't accept an empty list
             message = Player.players_in_room_data(players)
-            await asyncio.wait([user.send(message) for user in players])
+            await asyncio.wait([self.websocket.send(message)])

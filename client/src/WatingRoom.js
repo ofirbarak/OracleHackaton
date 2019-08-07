@@ -68,7 +68,6 @@ class WatingRoom extends React.Component {
 WatingRoom.propTypes = {
     classes: PropTypes.object.isRequired,
     room_users: PropTypes.array.isRequired,
-    socket: PropTypes.object.isRequired,
 };
 
 export default withStyles(styles)(WatingRoom);
