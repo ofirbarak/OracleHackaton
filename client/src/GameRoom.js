@@ -16,19 +16,9 @@ export default class GameRoom extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            myDek: [
-                { type: 'heart', number: 3 },
-                { type: 'heart', number: 6 },
-                { type: 'heart', number: 11 },
-                { type: 'heart', number: 9 },
-                { type: 'heart', number: 2 }
-            ],
+            myDek: props.handCards,
             playedCards: [
-                { type: 'heart', number: 3 },
-                { type: 'heart', number: 6 },
-                { type: 'heart', number: 11 },
-                { type: 'heart', number: 9 },
-                { type: 'heart', number: 2 }
+                { type: 'heart', number: 0 }
             ],
             numOfCardsInDeck:56
 

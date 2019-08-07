@@ -2,6 +2,7 @@ import React from 'react';
 import './App.css';
 import HomePage from './HomePage';
 import PickRoom from './PickRoom';
+import GameRoom from './GameRoom'
 import WatingRoom from './WatingRoom';
 import openSocket from 'socket.io-client';
 
@@ -11,11 +12,10 @@ class App extends React.Component {
         super(props);
         this.state = {
             currentPage: 'HomePage',
-            rooms: [{ name: "room1", count: 1 },
-            { name: "room2", count: 3 },
-            { name: "room3", count: 2 },
-            { name: "room4", count: 5 }],
-            room_users: ['dsdsds', 'sdsd', 'sfsdf', 'sdfsdf', 'sdfsdf'],
+            rooms: [],
+            room_users: [],
+            handCards: [],
+            roomName: undefined
         };
         this.state.socket = new WebSocket('ws://localhost:6789/');
 
@@ -37,6 +37,9 @@ class App extends React.Component {
         switch (data.type) {
             case 'rooms_info':
                 this.setState({ rooms: data.rooms });
+                break;
+            case 'game_started':
+                this.setState({ currentPage: 'GameRoom',handCards:data.handCards });
                 break;
             case 'add_player_to_room':
                 this.setState({ room_users: data.players });
@@ -62,7 +65,14 @@ class App extends React.Component {
             player_name: this.state.playerName,
             room_name: roomName
         }))
-        this.setState({ currentPage: "WaitingRoom" });
+        this.setState({ currentPage: "WaitingRoom",roomName });
+    }
+
+    letsPlay = ()=> {
+        this.state.socket.send(JSON.stringify({
+            action: "start_game",
+            room_name: this.state.roomName
+        }))
     }
 
     render() {
@@ -90,6 +100,14 @@ class App extends React.Component {
                     <div>
                         <WatingRoom
                             room_users={this.state.room_users}
+                            letsPlay={this.letsPlay}
+                            changePage={this.handleChange('currentPage')}/>
+                    </div> :
+                    null}
+                {this.state.currentPage == 'WaitingRoom' ?
+                    <div>
+                        <GameRoom
+                            handCards={this.state.handCards}
                             changePage={this.handleChange('currentPage')}/>
                     </div> :
                     null}
