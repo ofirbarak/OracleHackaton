@@ -51,9 +51,10 @@ class App extends React.Component {
                 break;
             case 'game_started':
                 const handCards = data.hand_cards.map((curCard) => {
+                    const curCardAsJson = JSON.parse(curCard);
                     return {
-                        type: enumToType(curCard.type),
-                        number: curCard.number
+                        type: enumToType(curCardAsJson.type),
+                        number: curCardAsJson.number
                     }
                 })
                 this.setState({ currentPage: 'GameRoom', handCards });
