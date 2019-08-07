@@ -31,6 +31,7 @@ class PickRoom extends React.Component {
 
     sendSelectedRoom(roomName) {
         console.log(roomName);
+        this.props.pickRoom(roomName);
     }
 
     renderRoom(room) {
@@ -78,7 +79,7 @@ class PickRoom extends React.Component {
 PickRoom.propTypes = {
     classes: PropTypes.object.isRequired,
     rooms: PropTypes.array.isRequired,
-    socket: PropTypes.object.isRequired,
+    pickRoom: PropTypes.func.isRequired,
 };
 
 export default withStyles(styles)(PickRoom);

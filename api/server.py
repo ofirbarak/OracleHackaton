@@ -37,6 +37,7 @@ async def notify_users_about_rooms():
 
 async def register(websocket):
     LONELY_USERS.append(websocket)
+    await notify_users_about_rooms()
 
 
 async def counter(websocket, path):
@@ -51,11 +52,12 @@ async def counter(websocket, path):
                 ROOMS.append(room)
                 await notify_users_about_rooms()
             elif data["action"] == "join_room":
-                player_name = data["player_name"];
-                player = next((x for x in LONELY_USERS if x.name == player_name), None)
-                room_name = data["room_name"];
+                player_name = data["player_name"]
+                player = Player(player_name, websocket)
+                LONELY_USERS.remove(player.websocket)
+                room_name = data["room_name"]
                 room = next((x for x in ROOMS if x.name == room_name), None)
-                room.add_player(player)
+                await room.add_player(player)
 
 
             else:

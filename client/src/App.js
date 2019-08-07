@@ -22,7 +22,6 @@ class App extends React.Component {
         this.handleChange = this.handleChange.bind(this);
         this.createRoom = this.createRoom.bind(this);
         this.pickRoom = this.pickRoom.bind(this);
-        this.handleServerMessages = this.handleServerMessages.bind(this);
 
         this.state.socket.onmessage = this.handleServerMessages;
     }
@@ -31,13 +30,16 @@ class App extends React.Component {
         return (value) => this.setState({ [key]: value });
     }
 
-    handleServerMessages(event) {
+    handleServerMessages = (event) => {
         console.log(event);
         let data = JSON.parse(event.data);
         console.log(data.names);
         switch (data.type) {
             case 'rooms_info':
                 this.setState({ rooms: data.rooms });
+                break;
+            case 'add_player_to_room':
+                this.setState({ room_users: data.players });
                 break;
             default:
                 console.error(
@@ -47,15 +49,20 @@ class App extends React.Component {
 
     createRoom() {
         console.log(this.state.playerName);
-        // this.state.socket.send(JSON.stringify({
-        //     action: "create_room",
-        //     name: this.state.playerName
-        // }));
+        this.state.socket.send(JSON.stringify({
+            action: "create_room",
+            name: this.state.playerName
+        }));
         this.setState({ currentPage: "WaitingRoom" });
     }
 
-    pickRoom(){
-        this.setState({ currentPage: "pickRoom"})
+    pickRoom(roomName) {
+        this.state.socket.send(JSON.stringify({
+            action: "join_room",
+            player_name: this.state.playerName,
+            room_name: roomName
+        }))
+        this.setState({ currentPage: "WaitingRoom" });
     }
 
     render() {
@@ -68,8 +75,7 @@ class App extends React.Component {
                             <HomePage
                                 changePage={this.handleChange('currentPage')}
                                 changePlayerName={this.handleChange('playerName')}
-                                createRoom={this.createRoom} 
-                                pickRoom={this.pickRoom}/>
+                                createRoom={this.createRoom} />
                         </div>
                     </div> :
                     null}
@@ -77,14 +83,14 @@ class App extends React.Component {
                     <div>
                         <PickRoom
                             rooms={this.state.rooms}
-                            socket={this.state.socket} />
+                            pickRoom={this.pickRoom}/>
                     </div> :
                     null}
                 {this.state.currentPage == 'WaitingRoom' ?
                     <div>
                         <WatingRoom
                             room_users={this.state.room_users}
-                            socket={this.state.socket} />
+                            changePage={this.handleChange('currentPage')}/>
                     </div> :
                     null}
 
