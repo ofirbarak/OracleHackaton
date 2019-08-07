@@ -1,30 +1,51 @@
 from models.Card import Card
 import random
+from models.suits import Suits
 
 
 class Deck:
     def __init__(self):
         self.cards = []
-
-    def __len__(self):
-        return self.cards.__len__()
+        self.build()
+        self.shuffle()
 
     def build(self):
-        for suit in ["Spades", "Hearts", "Clubs", "Diamonds"]:
-            for value in ["2", "3", "4", "5", "6", "7", "8", "9", "T", "J", "Q", "K", "A"]:
+        for suit in [Suits.Hearts, Suits.Spades, Suits.Diamonds, Suits.Clubs]:
+            for value in range(1, 14):
                 self.cards.append(Card(value, suit))
 
     def shuffle(self):
         return random.shuffle(self.cards)
 
-    def drawCard(self):
+    def draw_card(self):
         return self.cards.pop()
 
-    def playCard(self, card):
-        self.cards.append(card)
+    def draw_hand(self):
+        hand = []
+        for i in range(5):
+            hand.append(self.draw_card())
+        return hand
 
-    def isEmpty(self):
+    def is_empty(self):
         return len(self.cards) == 0
 
-    def copyDeck(self, other):
-        other.cards = self.cards
+    def recycle_deck(self, cards):
+        self.cards = cards
+        self.shuffle()
+
+
+class UsedStack:
+    def __init__(self):
+        self.cards = []
+
+    def played_card(self, card):
+        self.cards.append(card)
+
+    def get_current_card(self):
+        return self.cards[-1]
+
+    def recycle_used_stack(self, deck):
+        top_card = self.cards.pop()
+        deck.recycle_deck(self.cards)
+        self.cards.clear()
+        self.cards.append(top_card)
