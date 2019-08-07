@@ -29,7 +29,13 @@ def users_event():
 
 
 def rooms_event():
-    return json.dumps({"type": "rooms", "names": [x.name for x in LONELY_USERS]})
+    return json.dumps({"type": "rooms_names", "names": [x.name for x in ROOMS]})
+
+
+async def notify_users_about_rooms():
+    if USERS:  # asyncio.wait doesn't accept an empty list
+        message = rooms_event()
+        await asyncio.wait([user.send(message) for user in USERS])
 
 
 async def notify_state():
@@ -47,26 +53,23 @@ async def notify_users():
 async def register(websocket):
     LONELY_USERS.append(websocket)
     USERS.add(websocket)
-    await notify_users()
 
 
 async def unregister(websocket):
     USERS.remove(websocket)
-    await notify_users()
 
 
 async def counter(websocket, path):
     # register(websocket) sends user_event() to websocket
     await register(websocket)
     try:
-        await websocket.send(state_event())
         async for message in websocket:
             data = json.loads(message)
             if data["action"] == "create_room":
                 player = Player(data["name"], websocket)
                 room = Room(player)
                 ROOMS.append(room)
-                await rooms_event()
+                await notify_users_about_rooms()
             if data["action"] == "minus":
                 STATE["value"] -= 1
                 await notify_state()

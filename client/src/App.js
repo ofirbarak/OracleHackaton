@@ -10,15 +10,15 @@ class App extends React.Component {
         super(props);
         this.state = {
             currentPage: 'HomePage',
-            rooms: ['ddd', 'ddsd']
+            rooms: []
         };
-        // this.state.socket = new WebSocket('ws://localhost:6789/');
+        this.state.socket = new WebSocket('ws://localhost:6789/');
 
         this.handleChange = this.handleChange.bind(this);
         this.createRoom = this.createRoom.bind(this);
         this.handleServerMessages = this.handleServerMessages.bind(this);
 
-        // this.state.socket.onmessage = this.handleServerMessages;
+        this.state.socket.onmessage = this.handleServerMessages;
     }
 
     handleChange(key) {
@@ -27,24 +27,25 @@ class App extends React.Component {
 
     handleServerMessages(event) {
         console.log(event);
-        // data = JSON.parse(event.data);
-        // switch (data.type) {
-        //     case 'group_names':
-        //         this.setState({group_members: data.value});
-        //         break;
-        //     default:
-        //         console.error(
-        //             "unsupported event", data);
-        // }
+        let data = JSON.parse(event.data);
+        console.log(data.names);
+        switch (data.type) {
+            case 'rooms_names':
+                this.setState({rooms: data.names});
+                break;
+            default:
+                console.error(
+                    "unsupported event", data);
+        }
     }
 
     createRoom() {
         console.log(this.state.playerName);
         this.setState({ currentPage: "WaitingRoom" });
-        // this.state.socket.send(JSON.stringify({
-        //     action: "create_room",
-        //     name: this.state.playerName
-        // }));
+        this.state.socket.send(JSON.stringify({
+            action: "create_room",
+            name: this.state.playerName
+        }));
     }
 
     render() {
