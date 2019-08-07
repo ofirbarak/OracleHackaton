@@ -1,4 +1,4 @@
-from Card import Card
+from api.models.Card import Card
 
 
 class Deck:
