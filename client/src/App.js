@@ -1,7 +1,8 @@
 import React from 'react';
 import './App.css';
 import HomePage from './HomePage';
-import WaitingRoom from './WaitingRoom';
+import PickRoom from './PickRoom';
+import WatingRoom from './WatingRoom';
 import openSocket from 'socket.io-client';
 
 
@@ -9,24 +10,52 @@ class App extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            currentPage: 'HomePage'
+            currentPage: 'HomePage',
+            rooms: [{ name: "room1", count: 1 },
+            { name: "room2", count: 3 },
+            { name: "room3", count: 2 },
+            { name: "room4", count: 5 }],
+            room_users: ['dsdsds', 'sdsd', 'sfsdf', 'sdfsdf', 'sdfsdf'],
         };
+        this.state.socket = new WebSocket('ws://localhost:6789/');
 
         this.handleChange = this.handleChange.bind(this);
         this.createRoom = this.createRoom.bind(this);
-        this.state.socket = openSocket('http://localhost');
+        this.pickRoom = this.pickRoom.bind(this);
+        this.handleServerMessages = this.handleServerMessages.bind(this);
 
-        this.state.socket.on('room_data', )
+        this.state.socket.onmessage = this.handleServerMessages;
     }
 
     handleChange(key) {
         return (value) => this.setState({ [key]: value });
     }
 
-    createRoom(){
-        this.setState({currentPage: 'WaitingRoom'});
+    handleServerMessages(event) {
+        console.log(event);
+        let data = JSON.parse(event.data);
+        console.log(data.names);
+        switch (data.type) {
+            case 'rooms_info':
+                this.setState({ rooms: data.rooms });
+                break;
+            default:
+                console.error(
+                    "unsupported event", data);
+        }
+    }
+
+    createRoom() {
         console.log(this.state.playerName);
-        this.state.socket.emit('create_room', {action: this.state.playerName})
+        // this.state.socket.send(JSON.stringify({
+        //     action: "create_room",
+        //     name: this.state.playerName
+        // }));
+        this.setState({ currentPage: "WaitingRoom" });
+    }
+
+    pickRoom(){
+        this.setState({ currentPage: "pickRoom"})
     }
 
     render() {
@@ -34,20 +63,30 @@ class App extends React.Component {
             <div>
                 {this.state.currentPage == 'HomePage' ?
                     <div>
-                        <div class="background-image"></div>
-                        <div class="bg-text">
-                            <HomePage 
+                        <div className="background-image"></div>
+                        <div className="bg-text">
+                            <HomePage
                                 changePage={this.handleChange('currentPage')}
                                 changePlayerName={this.handleChange('playerName')}
-                                createRoom={this.createRoom}/>
+                                createRoom={this.createRoom} 
+                                pickRoom={this.pickRoom}/>
                         </div>
+                    </div> :
+                    null}
+                {this.state.currentPage == 'pickRoom' ?
+                    <div>
+                        <PickRoom
+                            rooms={this.state.rooms}
+                            socket={this.state.socket} />
                     </div> :
                     null}
                 {this.state.currentPage == 'WaitingRoom' ?
                     <div>
-                        <WaitingRoom />
+                        <WatingRoom
+                            room_users={this.state.room_users}
+                            socket={this.state.socket} />
                     </div> :
-                    null }
+                    null}
 
             </div>
         );
