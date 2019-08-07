@@ -6,6 +6,17 @@ import GameRoom from './GameRoom'
 import WatingRoom from './WatingRoom';
 import openSocket from 'socket.io-client';
 
+const enumToType = (enumName) => {
+    if (enumName === 0)
+        return 'hearts'
+    if (enumName === 1)
+        return 'spades'
+    if (enumName === 2)
+        return 'diamonds'
+    if (enumName === 3)
+        return 'clubs'
+    return undefined
+}
 
 class App extends React.Component {
     constructor(props) {
@@ -39,7 +50,13 @@ class App extends React.Component {
                 this.setState({ rooms: data.rooms });
                 break;
             case 'game_started':
-                this.setState({ currentPage: 'GameRoom', handCards: data.hand_cards });
+                const handCards = data.hand_cards.map((curCard) => {
+                    return {
+                        type: enumToType(curCard.type),
+                        number: curCard.number
+                    }
+                })
+                this.setState({ currentPage: 'GameRoom', handCards });
                 break;
             case 'add_player_to_room':
                 this.setState({ room_users: data.players });
