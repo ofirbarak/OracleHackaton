@@ -60,7 +60,7 @@ class HomePage extends React.Component {
                     </Grid>
                     <Grid container xs={12}>
                         <Grid item xs={6}>
-                            <Button size="lg" onClick={()=>this.props.changePage('JoinGame')}>Join a game</Button>
+                            <Button size="lg" onClick={()=>this.props.changePage('WaitingRoom')}>Join a game</Button>
                         </Grid>
                         <Grid item xs={6} alignItems="center">
                             <Button size="lg" onClick={()=>this.props.createRoom()}>Create a game</Button>

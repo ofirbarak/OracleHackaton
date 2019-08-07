@@ -1,7 +1,7 @@
 import React from 'react';
 import './App.css';
 import HomePage from './HomePage';
-import WatingRoom from './WatingRoom';
+import WaitingRoom from './WaitingRoom';
 import openSocket from 'socket.io-client';
 
 
@@ -14,19 +14,29 @@ class App extends React.Component {
 
         this.handleChange = this.handleChange.bind(this);
         this.createRoom = this.createRoom.bind(this);
-        this.state.socket = openSocket('http://localhost');
+        // this.state.socket = openSocket('ws://localhost:6789');
+        // this.state.socket = io('ws://localhost:6789');
+        // this.state.socket = io({
+        //     transports: ['websocket']
+        // });
+        // this.state.socket.openSocket('ws://localhost:6789');
+        this.state.socket = new WebSocket('ws://localhost:6789/');
 
-        this.state.socket.on('room_data', )
+        // this.state.socket.on('room_data', )
     }
 
     handleChange(key) {
         return (value) => this.setState({ [key]: value });
     }
 
-    createRoom(){
-        this.setState({currentPage: 'WatingRoom'});
+    createRoom() {
+        this.setState({ currentPage: 'WatingRoom' });
         console.log(this.state.playerName);
-        this.state.socket.emit('create_room', {action: this.state.playerName})
+        this.state.socket.send(JSON.stringify({
+            action: "create_room",
+            name: this.state.playerName
+        }));
+        // this.state.socket.emit('create_room', { action: this.state.playerName })
     }
 
     render() {
@@ -36,18 +46,18 @@ class App extends React.Component {
                     <div>
                         <div class="background-image"></div>
                         <div class="bg-text">
-                            <HomePage 
+                            <HomePage
                                 changePage={this.handleChange('currentPage')}
                                 changePlayerName={this.handleChange('playerName')}
-                                createRoom={this.createRoom}/>
+                                createRoom={this.createRoom} />
                         </div>
                     </div> :
                     null}
-                {this.state.currentPage == 'WatingRoom' ?
+                {this.state.currentPage == 'WaitingRoom' ?
                     <div>
-                        <WatingRoom />
+                        <WaitingRoom />
                     </div> :
-                    null }
+                    null}
 
             </div>
         );
