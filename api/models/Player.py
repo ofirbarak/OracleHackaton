@@ -1,5 +1,5 @@
 class Player:
-    def __init__(self, name, websocket):
+    def __init__(self, name, websocket=None):
         self.name = name
         self.hand_cards = []
         self.websocket = websocket
@@ -20,6 +20,3 @@ class Player:
 
     def is_won(self):
         return len(self.hand_cards) == 0
-
-    def define_rule(self):
-        return Rule()
