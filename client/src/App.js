@@ -126,6 +126,7 @@ class App extends React.Component {
                     <div>
                         <GameRoom
                             handCards={this.state.handCards}
+                            room_users={this.state.room_users}
                             changePage={this.handleChange('currentPage')} />
                     </div> :
                     null}
