@@ -148,7 +148,7 @@ class App extends React.Component {
             action: "create_room",
             name: this.state.playerName
         }));
-        this.setState({ currentPage: "WaitingRoom" });
+        this.setState({ currentPage: "WaitingRoom",roomName:this.state.playerName+' room' });
     }
 
     pickRoom(roomName) {
