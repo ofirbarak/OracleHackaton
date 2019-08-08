@@ -88,7 +88,7 @@ class App extends React.Component {
                 playedCardsClone.push(formatedCard)
 
                 const temp = clone(this.state.room_users)
-                temp[data.player_name]--;
+                temp[data.player_name].numOfCards--;
                 this.state.setState({ playedCards: playedCardsClone, room_users: temp })
                 break;
             case 'wrong_move':
@@ -107,7 +107,7 @@ class App extends React.Component {
                 }
 
                 const temp3 = clone(this.state.room_users)
-                temp3[data.player_name]++;
+                temp3[data.player_name].numOfCards++;
                 this.state.setState({ room_users: temp3 })
 
 
@@ -125,8 +125,8 @@ class App extends React.Component {
                 }
 
                 const temp1 = clone(this.state.room_users)
-                temp1[data.player_name]++;
-                this.setState({ room_users: temp1 })
+                temp1[data.player_name].numOfCards++;
+                this.state.setState({ room_users: temp1 })
 
                 break;
             case 'add_player_to_room':
