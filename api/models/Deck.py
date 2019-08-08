@@ -22,7 +22,7 @@ class Deck:
 
     def draw_hand(self):
         hand = []
-        for i in range(1):
+        for i in range(5):
             hand.append(self.draw_card())
         return hand
 

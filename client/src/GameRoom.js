@@ -15,34 +15,6 @@ import _ from 'lodash'
 export default class GameRoom extends React.Component {
     constructor(props) {
         super(props);
-        this.state = {
-            myDek: props.handCards,
-            playedCards: [
-                { type: 'heart', number: 0 }
-            ],
-            numOfCardsInDeck:56
-
-        };
-    }
-
-
-    placeCard = (type,number) =>{
-        toast(`placed ${number} of ${type}`)
-        setTimeout(()=>{
-            const indexToRemove = this.state.myDek.findIndex((curCard)=>(curCard.type===type && curCard.number===number))
-            const newDek = _.remove(this.state.myDek,(cur,index)=>index!==indexToRemove)
-            const newPlayedCards = _.clone(this.state.playedCards)
-            newPlayedCards.push({type,number})
-            this.setState({myDek: newDek,playedCards:newPlayedCards})
-        },100)
-    }
-    takeCardFromDek = () =>{
-        const newArr = clone(this.state.myDek);
-        newArr.push({ type: 'heart', number: 6 })
-        this.setState({myDek:newArr,numOfCardsInDeck:this.state.numOfCardsInDeck-1})
-    }
-    rejectUserAction = ()=> {
-        toast('ha ha ha ');
     }
     render = () => {
         return (
@@ -52,17 +24,14 @@ export default class GameRoom extends React.Component {
                 <br />
                 <Row>
                     <Col>
-                        <CardsDek onClick={this.takeCardFromDek} numOfCardsInDeck={this.state.numOfCardsInDeck} />
+                        <CardsDek onClick={this.props.takeCardFromDek} numOfCardsInDeck={this.props.numOfCardsInDeck} />
                     </Col>
                     <Col>
-                        <DrawnCards cards={this.state.playedCards}></DrawnCards>
+                        <DrawnCards cards={this.props.playedCards}></DrawnCards>
                     </Col>
                     <Col>
                         <ListGroup>
-                            <ListGroup.Item>player1</ListGroup.Item>
-                            <ListGroup.Item>player2</ListGroup.Item>
-                            <ListGroup.Item>player3</ListGroup.Item>
-                            <ListGroup.Item>player4</ListGroup.Item>
+                            {Object.keys(this.props.room_users).map((curUser,key)=><ListGroup.Item key={key}>{`${curUser} have ${this.props.room_users[curUser].numOfCards} cards`}</ListGroup.Item>)}
                         </ListGroup>
                     </Col>
                 </Row>
@@ -71,9 +40,9 @@ export default class GameRoom extends React.Component {
                 <br />
                 <Row>
                     {
-                        this.state.myDek.map((curCard,key) => (
+                        this.props.myDek.map((curCard,key) => (
                             <Col key={key} xs={2} style={{'paddingBottom':'5px'}}>
-                                <PlayingCard onClick={()=>{this.placeCard(curCard.type,curCard.number)}} type={curCard.type} number={curCard.number}></PlayingCard>
+                                <PlayingCard onClick={()=>{this.props.placeCard({number:curCard.number,type:curCard.type})}} type={curCard.type} number={curCard.number}></PlayingCard>
                             </Col>
                         ))
                     }

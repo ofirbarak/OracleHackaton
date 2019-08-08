@@ -7,8 +7,9 @@ import json
 import logging
 import websockets
 
+from models.Card import Card
 from models.Player import Player
-from models.Room import Room
+from models.Room import Room, Suits
 
 logging.basicConfig()
 
@@ -40,7 +41,22 @@ async def register(websocket):
     await notify_users_about_rooms()
 
 
-async def counter(websocket, path):
+def get_room_by_name(room_name):
+    return next((room for room in ROOMS if room.name == room_name), None)
+
+
+def get_enum_from_suit_type(suit_type):
+    if suit_type == 0:
+        return Suits.HEARTS
+    if suit_type == 1:
+        return Suits.SPADES
+    if suit_type == 2:
+        return Suits.DIAMONDS
+    if suit_type == 3:
+        return Suits.CLUBS
+
+
+async def mau(websocket, path):
     # register(websocket) sends user_event() to websocket
     await register(websocket)
     try:
@@ -57,17 +73,27 @@ async def counter(websocket, path):
                 player_name = data["player_name"]
                 player = Player(player_name, websocket)
                 LONELY_USERS.remove(player.websocket)
-                room_name = data["room_name"]
-                room = next((x for x in ROOMS if x.name == room_name), None)
+                room = get_room_by_name(data["room_name"])
                 await room.add_player(player)
                 await notify_users_about_rooms()
 
             elif data["action"] == "start_game":
-                room_name = data["room_name"]
-                room = next((room for room in ROOMS if room.name == room_name), None)
+                room = get_room_by_name(data["room_name"])
                 await room.start_round()
 
+            elif data["action"] == "put_card":
+                player_name = data["player_name"]
+                card = data["card"]
+                room = get_room_by_name(data["room_name"])
+                player = room.get_player_by_name(player_name)
+                card = Card(card["number"], get_enum_from_suit_type(card["type"]))
+                await room.round.play(player, card)
 
+            elif data["action"] == "take_card":
+                player_name = data["player_name"]
+                room = get_room_by_name(data["room_name"])
+                player = room.get_player_by_name(player_name)
+                await room.round.draw(player)
             else:
                 logging.error("unsupported event: {}", data)
     finally:
@@ -75,7 +101,7 @@ async def counter(websocket, path):
     #     await unregister(websocket)
 
 
-start_server = websockets.serve(counter, "localhost", 6789)
+start_server = websockets.serve(mau, "localhost", 6789)
 
 asyncio.get_event_loop().run_until_complete(start_server)
 asyncio.get_event_loop().run_forever()

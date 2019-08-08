@@ -19,9 +19,13 @@ class Room:
         self.round = Round(self.players, self.rules)
         await self.round.start()
 
+    def get_player_by_name(self, player_name):
+        return next(player for player in self.players if player.name == player_name)
+
     def card_suit_rule(self, card, used_stack, player):
         if card == 0:
             return True, self.round_unchanged
         return False, self.round_unchanged
 
-    def round_unchanged(self, round_instance): return round_instance
+    def round_unchanged(self, round_instance):
+        return round_instance

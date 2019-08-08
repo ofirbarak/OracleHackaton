@@ -16,30 +16,33 @@ class Round:
     async def start(self):
         for player in self.players:
             player.hand_cards = self.deck.draw_hand()
-        self.used_stack.use_card(self.deck.draw_card())
-        await asyncio.wait([player.notify_about_start_round() for player in self.players])
+        first_card = self.deck.draw_card()
+        self.used_stack.use_card(first_card)
+        await asyncio.wait([player.notify_about_start_round(first_card) for player in self.players])
 
-    def player_draw_card(self, player):
-        player.draw_card(self.deck)
+    async def player_draw_card(self, player):
+        drawn_card = player.draw_card(self.deck)
+        await asyncio.wait([p.notify_about_draw_card(drawn_card, player) for p in self.players])
         if self.deck.is_empty():
             self.used_stack.recycle_used_stack(self.deck)
 
-    def draw(self, player):
+    async def draw(self, player):
         if not self.is_my_turn(player):
-            self.not_played_in_his_turn(player)
+            await self.drawn_not_in_his_turn(player)
         else:
-            self.player_draw_card(player)
+            await self.player_draw_card(player)
             self.forward_turn()
 
-    def play(self, player, card):
+    async def play(self, player, card):
         player.played_card(card)
+        await asyncio.wait([p.notify_about_put_card(card, player) for p in self.players])
         if not self.is_my_turn(player):
-            self.not_played_in_his_turn(player, card)
+            await self.played_not_in_his_turn(player, card)
         else:
             if self.is_valid_play(player, card):
                 self.accept_play(player, card)
             else:
-                self.reject_play(player, card)
+                await self.reject_play(player, card)
 
     def is_valid_play(self, player, card):
         actions = []
@@ -64,9 +67,12 @@ class Round:
             self.forward_turn()
             self.used_stack.use_card(card)
 
-    def reject_play(self, player, card):
+    async def reject_play(self, player, card):
         player.get_card_back(card)
-        self.player_draw_card(player)
+        await asyncio.wait(
+            [p.notify_about_take_card_back(card, f"{player.name} took a card back from stack", player) for p in
+             self.players])
+        await self.player_draw_card(player)
         # TODO: send message that the play was rejected
 
     def forward_turn(self):
@@ -78,11 +84,21 @@ class Round:
     def is_my_turn(self, player):
         return player == self.players[self.turn]
 
-    def not_played_in_his_turn(self, player, card=None):
-        # TODO: send message that player doesn't played in his turn
-        if card:
-            player.get_card_back(card)
-        self.player_draw_card(player)
+    async def played_not_in_his_turn(self, player, card):
+        player.get_card_back(card)
+        await asyncio.wait(
+            [p.notify_about_invalid_put_card(card, f"{player.name} didn't play in his turn!", player) for p in
+             self.players])
+        await asyncio.wait(
+            [p.notify_about_take_card_back(card, f"{player.name} took a card back from stack", player) for p in
+             self.players])
+        await self.player_draw_card(player)
+
+    async def drawn_not_in_his_turn(self, player):
+        await asyncio.wait(
+            [p.notify_about_invalid_put_card(None, f"{player.name} didn't play in his turn!", player) for p in
+             self.players])
+        await self.player_draw_card(player)
 
     def round_over(self, player):
         # TODO: msg player is the winner, player set new rule
