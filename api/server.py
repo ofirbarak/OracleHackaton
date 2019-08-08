@@ -48,11 +48,13 @@ async def counter(websocket, path):
     try:
         async for message in websocket:
             data = json.loads(message)
+
             if data["action"] == "create_room":
                 player = Player(data["name"], websocket)
                 room = Room(player)
                 ROOMS.append(room)
                 await notify_users_about_rooms()
+
             elif data["action"] == "join_room":
                 player_name = data["player_name"]
                 player = Player(player_name, websocket)
@@ -60,6 +62,14 @@ async def counter(websocket, path):
                 room_name = data["room_name"]
                 room = next((x for x in ROOMS if x.name == room_name), None)
                 await room.add_player(player)
+                await notify_users_about_rooms()
+
+            elif data["action"] == "start_game":
+                room_name = data["room_name"]
+                room = next((room for room in ROOMS if room.name == room_name), None)
+                await room.start_round()
+
+
             elif data["action"] == "send_chat_message":
                 message = data["message_text"]
             else:

@@ -26,12 +26,6 @@ const styles = theme => ({
 class WatingRoom extends React.Component {
     constructor(props) {
         super(props);
-
-        this.letsPlay = this.letsPlay.bind(this);
-    }
-
-    letsPlay(){
-        console.log('ready to play');
     }
 
     renderUser(user) {
@@ -58,7 +52,7 @@ class WatingRoom extends React.Component {
                 {this.props.room_users.map(x => this.renderUser(x))}
 
                 <Grid item xs={12}>
-                    <Button size="lg" onClick={() => this.letsPlay()}>I'm ready to play</Button>
+                    <Button size="lg" onClick={() => this.props.letsPlay()}>start game</Button>
                 </Grid>
             </Grid>
         );
@@ -68,6 +62,8 @@ class WatingRoom extends React.Component {
 WatingRoom.propTypes = {
     classes: PropTypes.object.isRequired,
     room_users: PropTypes.array.isRequired,
+    room_name: PropTypes.string.isRequired,
+    letsPlay: PropTypes.func.isRequired
 };
 
 export default withStyles(styles)(WatingRoom);
