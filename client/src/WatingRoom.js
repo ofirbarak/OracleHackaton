@@ -49,7 +49,7 @@ class WatingRoom extends React.Component {
                     <h1>Let's Play</h1>
                 </Grid>
 
-                {this.props.room_users.map(x => this.renderUser(x))}
+                {Object.keys(this.props.room_users).map(x => this.renderUser(x))}
 
                 <Grid item xs={12}>
                     <Button size="lg" onClick={() => this.props.letsPlay()}>start game</Button>
