@@ -5,6 +5,8 @@
 import asyncio
 import json
 import logging
+from atexit import unregister
+
 import websockets
 
 from models.Card import Card
@@ -98,10 +100,10 @@ async def mau(websocket, path):
                 logging.error("unsupported event: {}", data)
     finally:
         logging.info("unregistered");
-    #     await unregister(websocket)
+        await unregister(websocket)
 
 
-start_server = websockets.serve(mau, "localhost", 6789)
+start_server = websockets.serve(mau, "10.28.145.223", 6789)
 
 asyncio.get_event_loop().run_until_complete(start_server)
 asyncio.get_event_loop().run_forever()

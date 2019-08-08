@@ -87,16 +87,16 @@ class Round:
     async def played_not_in_his_turn(self, player, card):
         player.get_card_back(card)
         await asyncio.wait(
-            [p.notify_about_invalid_put_card(card, f"{player.name} didn't play in his turn!", player) for p in
+            [p.notify_about_invalid_put_card(card, f"{player.name} played but it's not his turn!", player) for p in
              self.players])
         await asyncio.wait(
-            [p.notify_about_take_card_back(card, f"{player.name} took a card back from stack", player) for p in
+            [p.notify_about_take_card_back(card, f"{player.name} took a card from stack", player) for p in
              self.players])
         await self.player_draw_card(player)
 
     async def drawn_not_in_his_turn(self, player):
         await asyncio.wait(
-            [p.notify_about_invalid_put_card(None, f"{player.name} didn't play in his turn!", player) for p in
+            [p.notify_about_invalid_put_card(None, f"{player.name} played but it's not his turn!", player) for p in
              self.players])
         await self.player_draw_card(player)
 
