@@ -77,7 +77,7 @@ class App extends React.Component {
                     }
                 })
                 const firstCardAsJson = JSON.parse(data.first_card);
-                this.setState({
+                this.setState({numOfCardsInDeck:56-(5*(Object.keys(this.state.room_users).length)),
                     currentPage: 'GameRoom', myDek: initialDek,
                     playedCards: [{ number: firstCardAsJson.number, type: enumToType(firstCardAsJson.type) }]
                 });
@@ -146,7 +146,13 @@ class App extends React.Component {
 
                 const temp1 = clone(this.state.room_users)
                 temp1[data.player_name].numOfCards++;
-                this.setState({ room_users: temp1 })
+                let newNumOfCardsInDeck = this.state.numOfCardsInDeck;
+                let newPlayedCards = clone(this.state.playedCards)
+                if(this.state.numOfCardsInDeck = 1){
+                    newNumOfCardsInDeck += this.state.playedCards.length-1;
+                    newPlayedCards = [newPlayedCards.pop()];
+                }
+                this.setState({ room_users: temp1,numOfCardsInDeck:newNumOfCardsInDeck-1,playedCards:newPlayedCards })
 
                 break;
             case 'add_player_to_room':
