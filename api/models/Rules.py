@@ -51,7 +51,7 @@ def rule_only_red(card, used_stack, player):
 
 
 def action_skip_turn(round_state):
-    round_state.turn += 1
+    round_state.forward_turn()
 
 
 def action_change_direction(round_state):
