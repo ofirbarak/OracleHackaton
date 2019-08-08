@@ -41,4 +41,4 @@ class Card:
         return "{} of {}".format(self.value, self.get_str_suit())
 
     def __eq__(self, other):
-        return self.value == other.value and self.suit.value == other.suit
+        return self.value == other.value and self.suit == other.suit

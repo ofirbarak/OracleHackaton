@@ -34,7 +34,8 @@ class Round:
             self.forward_turn()
 
     async def play(self, player, card):
-        await player.played_card(card)
+        player.played_card(card)
+        await asyncio.wait([p.notify_about_put_card(card, player) for p in self.players])
         if not self.is_my_turn(player):
             await self.not_played_in_his_turn(player, card)
         else:
