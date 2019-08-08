@@ -8,12 +8,14 @@ class Player:
         self.hand_cards = []
         self.websocket = websocket
 
-    def draw_card(self, deck):
+    async def draw_card(self, deck):
         card = deck.draw_card()
+        await self.notify_about_draw_card(card)
         self.hand_cards.append(card)
 
-    def played_card(self, card):
+    async def played_card(self, card):
         self.hand_cards.remove(card)
+        await self.notify_about_put_card(card)
 
     def show_hand(self):
         for card in self.hand_cards:
@@ -21,6 +23,7 @@ class Player:
 
     def get_card_back(self, card):
         self.hand_cards.append(card)
+        self.notify_about_take_card_back(card, f"{self.name} took a card back stack")
 
     def is_won(self):
         return len(self.hand_cards) == 0
@@ -37,5 +40,39 @@ class Player:
         message = json.dumps({
             "type": "game_started",
             "hand_cards": [card.to_json() for card in self.hand_cards]
+        })
+        await asyncio.wait([self.websocket.send(message)])
+
+    async def notify_about_put_card(self, card):
+        message = json.dumps({
+            "type": "card_put_on_deck",
+            "card": card.to_json(),
+            "player_name": self.name
+        })
+        await asyncio.wait([self.websocket.send(message)])
+
+    async def notify_about_invalid_put_card(self, card, text_message):
+        message = json.dumps({
+            "type": "wrong_move",
+            "card": card.to_json(),
+            "message": text_message,
+            "player_name": self.name
+        })
+        await asyncio.wait([self.websocket.send(message)])
+
+    async def notify_about_take_card_back(self, card, text_message):
+        message = json.dumps({
+            "type": "card_taken_from_played_cards",
+            "card": card.to_json(),
+            "message": text_message,
+            "player_name": self.name
+        })
+        await asyncio.wait([self.websocket.send(message)])
+
+    async def notify_about_draw_card(self, card):
+        message = json.dumps({
+            "type": "card_taken_from_deck",
+            "card": card.to_json(),
+            "player_name": self.name
         })
         await asyncio.wait([self.websocket.send(message)])
