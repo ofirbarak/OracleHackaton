@@ -2,7 +2,6 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="daf2b9e7-fefb-4443-bd63-cd988d487881" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/models/Player.py" beforeDir="false" afterPath="$PROJECT_DIR$/models/Player.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/models/Round.py" beforeDir="false" afterPath="$PROJECT_DIR$/models/Round.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -55,8 +54,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/models/Round.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="140">
-              <caret line="87" column="16" lean-forward="true" selection-start-line="87" selection-start-column="16" selection-end-line="87" selection-end-column="16" />
+            <state relative-caret-position="-64">
+              <caret line="72" column="87" selection-start-line="72" selection-start-column="87" selection-end-line="72" selection-end-column="87" />
               <folding>
                 <element signature="e#0#14#0" expanded="true" />
               </folding>
@@ -97,8 +96,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/models/Player.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="191">
-              <caret line="55" column="29" lean-forward="true" selection-start-line="55" selection-start-column="14" selection-end-line="55" selection-end-column="43" />
+            <state relative-caret-position="310">
+              <caret line="65" column="41" selection-start-line="65" selection-start-column="14" selection-end-line="65" selection-end-column="41" />
               <folding>
                 <element signature="e#1#15#0" expanded="true" />
               </folding>
@@ -141,8 +140,10 @@
       <find>play</find>
       <find>card_taken_from_deck</find>
       <find>logging</find>
-      <find>notify_about_take_card_back</find>
       <find>player_name</find>
+      <find>not_played_in_his_turn</find>
+      <find>played_not_in_his_turn</find>
+      <find>notify_about_take_card_back</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -330,8 +331,8 @@
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
-      <window_info active="true" anchor="bottom" id="Find" order="1" visible="true" weight="0.3286119" />
-      <window_info anchor="bottom" id="Run" order="2" weight="0.2917847" />
+      <window_info anchor="bottom" id="Find" order="1" weight="0.3286119" />
+      <window_info active="true" anchor="bottom" id="Run" order="2" visible="true" weight="0.2917847" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.39943343" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
@@ -488,8 +489,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/models/Player.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="191">
-          <caret line="55" column="29" lean-forward="true" selection-start-line="55" selection-start-column="14" selection-end-line="55" selection-end-column="43" />
+        <state relative-caret-position="310">
+          <caret line="65" column="41" selection-start-line="65" selection-start-column="14" selection-end-line="65" selection-end-column="41" />
           <folding>
             <element signature="e#1#15#0" expanded="true" />
           </folding>
@@ -498,8 +499,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/models/Round.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="140">
-          <caret line="87" column="16" lean-forward="true" selection-start-line="87" selection-start-column="16" selection-end-line="87" selection-end-column="16" />
+        <state relative-caret-position="-64">
+          <caret line="72" column="87" selection-start-line="72" selection-start-column="87" selection-end-line="72" selection-end-column="87" />
           <folding>
             <element signature="e#0#14#0" expanded="true" />
           </folding>

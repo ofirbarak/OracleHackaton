@@ -119,7 +119,6 @@ class App extends React.Component {
                         number: curCardAsJson.number
                     }
                     const myDekClone = clone(this.state.myDek)
-                    myDekClone.push(formatedCard)
                     myDekClone.push(ttt.pop())
                     this.setState({ myDek: myDekClone });
                 }
@@ -128,7 +127,7 @@ class App extends React.Component {
                 }
 
                 const temp3 = clone(this.state.room_users)
-                temp3[data.player_name].numOfCards += 2;
+                temp3[data.player_name].numOfCards ++;
                 this.setState({ room_users: temp3, playedCards: ttt })
 
 
