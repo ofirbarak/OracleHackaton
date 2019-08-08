@@ -8,7 +8,7 @@ class Room:
     def __init__(self, creator):
         self.players = [creator]
         self.round = None
-        self.rules = [rule_cards_suit, rule_ace_card, rule_eight_card, rule_three_card]
+        self.rules = [rule_cards_suit, rule_skip_turn, rule_change_color, rule_change_direction]
         self.name = creator.name + " room"
 
     async def add_player(self, player):
@@ -21,11 +21,3 @@ class Room:
 
     def get_player_by_name(self, player_name):
         return next(player for player in self.players if player.name == player_name)
-
-    def card_suit_rule(self, card, used_stack, player):
-        if card == 0:
-            return True, self.round_unchanged
-        return False, self.round_unchanged
-
-    def round_unchanged(self, round_instance):
-        return round_instance

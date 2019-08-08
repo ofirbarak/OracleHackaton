@@ -4,7 +4,7 @@ from models.Rules import *
 
 players = [Player("A"), Player("B"), Player("C")]
 
-rules = [rule_cards_suit, rule_ace_card, rule_eight_card, rule_three_card]
+rules = [rule_cards_suit, rule_skip_turn, rule_change_color, rule_change_direction]
 
 newRound = Round(players, rules)
 
