@@ -70,8 +70,8 @@ class Round:
     async def reject_play(self, player, card):
         player.get_card_back(card)
         await asyncio.wait(
-            [p.notify_about_take_card_back(card, f"{player.name} took a card back stack") for p in self.players])
-        self.player_draw_card(player)
+            [p.notify_about_take_card_back(card, f"{player.name} took a card back stack", player) for p in self.players])
+        await self.player_draw_card(player)
         # TODO: send message that the play was rejected
 
     def forward_turn(self):
