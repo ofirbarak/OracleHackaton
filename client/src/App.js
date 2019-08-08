@@ -111,6 +111,7 @@ class App extends React.Component {
                 toast(`${data.player_name} ${data.message}`)
                 break;
             case 'card_taken_from_played_cards':
+                const ttt = clone(this.state.playedCards)
                 if (data.player_name === this.state.playerName) {
                     const curCardAsJson = JSON.parse(data.card);
                     const formatedCard = {
@@ -119,14 +120,16 @@ class App extends React.Component {
                     }
                     const myDekClone = clone(this.state.myDek)
                     myDekClone.push(formatedCard)
+                    myDekClone.push(ttt.pop())
                     this.setState({ myDek: myDekClone });
+                }
+                else {
+                    ttt.pop()
                 }
 
                 const temp3 = clone(this.state.room_users)
-                temp3[data.player_name].numOfCards++;
-                const ttt = clone(this.state.playedCards)
-                ttt.pop();
-                this.setState({ room_users: temp3,playedCards:ttt })
+                temp3[data.player_name].numOfCards += 2;
+                this.setState({ room_users: temp3, playedCards: ttt })
 
 
                 break;
