@@ -89,7 +89,7 @@ class App extends React.Component {
 
                 const temp = clone(this.state.room_users)
                 temp[data.player_name].numOfCards--;
-                this.state.setState({ playedCards: playedCardsClone, room_users: temp })
+                this.setState({ playedCards: playedCardsClone, room_users: temp })
                 break;
             case 'wrong_move':
                 toast(`${data.player_name} ${data.message}`)
@@ -108,7 +108,7 @@ class App extends React.Component {
 
                 const temp3 = clone(this.state.room_users)
                 temp3[data.player_name].numOfCards++;
-                this.state.setState({ room_users: temp3 })
+                this.setState({ room_users: temp3 })
 
 
                 break;
@@ -126,7 +126,7 @@ class App extends React.Component {
 
                 const temp1 = clone(this.state.room_users)
                 temp1[data.player_name].numOfCards++;
-                this.state.setState({ room_users: temp1 })
+                this.setState({ room_users: temp1 })
 
                 break;
             case 'add_player_to_room':
