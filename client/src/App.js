@@ -117,14 +117,14 @@ class App extends React.Component {
                         type: enumToType(curCardAsJson.type),
                         number: curCardAsJson.number
                     }
-                    const myDekClone = _.clone(this.state.myDek)
+                    const myDekClone = clone(this.state.myDek)
                     myDekClone.push(formatedCard)
                     this.setState({ myDek: myDekClone });
                 }
 
                 const temp3 = clone(this.state.room_users)
                 temp3[data.player_name].numOfCards++;
-                this.setState({ room_users: temp3 })
+                this.setState({ room_users: temp3,playedCards:clone(this.state.playedCards).pop() })
 
 
                 break;
