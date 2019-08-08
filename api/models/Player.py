@@ -14,7 +14,10 @@ class Player:
         return card
 
     async def played_card(self, card):
-        self.hand_cards.remove(card)
+        for c in self.hand_cards:
+            if c == card:
+                self.hand_cards.remove(c)
+                break
         await self.notify_about_put_card(card)
 
     def show_hand(self):
