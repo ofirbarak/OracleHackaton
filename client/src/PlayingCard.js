@@ -130,7 +130,7 @@ const cardByTypeAndNum = (type, number) => {
 
 export default  (props) => {
     return (
-        <Card style={{'height':'190px', 'width':'130px'}} >
+        <Card className='scale-on-hover' style={Object.assign(props.cardStyle || {},{'height':'190px', 'width':'130px'})} >
             <Card.Img onClick={props.onClick} src={cardByTypeAndNum(props.type, props.number)}/>
         </Card>)
 }
