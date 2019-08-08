@@ -2,10 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="daf2b9e7-fefb-4443-bd63-cd988d487881" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/models/Card.py" beforeDir="false" afterPath="$PROJECT_DIR$/models/Card.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/models/Player.py" beforeDir="false" afterPath="$PROJECT_DIR$/models/Player.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/models/Round.py" beforeDir="false" afterPath="$PROJECT_DIR$/models/Round.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server.py" beforeDir="false" afterPath="$PROJECT_DIR$/server.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -54,11 +52,11 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="false">
+      <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/models/Round.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="131">
-              <caret line="72" column="34" selection-start-line="72" selection-start-column="34" selection-end-line="72" selection-end-column="34" />
+            <state relative-caret-position="140">
+              <caret line="87" column="16" lean-forward="true" selection-start-line="87" selection-start-column="16" selection-end-line="87" selection-end-column="16" />
               <folding>
                 <element signature="e#0#14#0" expanded="true" />
               </folding>
@@ -96,11 +94,11 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/models/Player.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="123">
-              <caret line="65" column="14" selection-start-line="65" selection-start-column="14" selection-end-line="65" selection-end-column="14" />
+            <state relative-caret-position="191">
+              <caret line="55" column="29" lean-forward="true" selection-start-line="55" selection-start-column="14" selection-end-line="55" selection-end-column="43" />
               <folding>
                 <element signature="e#1#15#0" expanded="true" />
               </folding>
@@ -144,6 +142,7 @@
       <find>card_taken_from_deck</find>
       <find>logging</find>
       <find>notify_about_take_card_back</find>
+      <find>player_name</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -159,8 +158,8 @@
         <option value="$PROJECT_DIR$/models/Rules.py" />
         <option value="$PROJECT_DIR$/server.py" />
         <option value="$PROJECT_DIR$/models/Card.py" />
-        <option value="$PROJECT_DIR$/models/Round.py" />
         <option value="$PROJECT_DIR$/models/Player.py" />
+        <option value="$PROJECT_DIR$/models/Round.py" />
       </list>
     </option>
   </component>
@@ -487,22 +486,22 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/models/Round.py">
+    <entry file="file://$PROJECT_DIR$/models/Player.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="131">
-          <caret line="72" column="34" selection-start-line="72" selection-start-column="34" selection-end-line="72" selection-end-column="34" />
+        <state relative-caret-position="191">
+          <caret line="55" column="29" lean-forward="true" selection-start-line="55" selection-start-column="14" selection-end-line="55" selection-end-column="43" />
           <folding>
-            <element signature="e#0#14#0" expanded="true" />
+            <element signature="e#1#15#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/models/Player.py">
+    <entry file="file://$PROJECT_DIR$/models/Round.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="123">
-          <caret line="65" column="14" selection-start-line="65" selection-start-column="14" selection-end-line="65" selection-end-column="14" />
+        <state relative-caret-position="140">
+          <caret line="87" column="16" lean-forward="true" selection-start-line="87" selection-start-column="16" selection-end-line="87" selection-end-column="16" />
           <folding>
-            <element signature="e#1#15#0" expanded="true" />
+            <element signature="e#0#14#0" expanded="true" />
           </folding>
         </state>
       </provider>

@@ -53,22 +53,22 @@ class Player:
         })
         await asyncio.wait([self.websocket.send(message)])
 
-    async def notify_about_invalid_put_card(self, card, text_message):
+    async def notify_about_invalid_put_card(self, card, text_message, player):
 
         message = json.dumps({
             "type": "wrong_move",
             "card": card.to_json() if card else card,
             "message": text_message,
-            "player_name": self.name
+            "player_name": player.name
         })
         await asyncio.wait([self.websocket.send(message)])
 
-    async def notify_about_take_card_back(self, card, text_message):
+    async def notify_about_take_card_back(self, card, text_message, player):
         message = json.dumps({
             "type": "card_taken_from_played_cards",
             "card": card.to_json(),
             "message": text_message,
-            "player_name": self.name
+            "player_name": player.name
         })
         await asyncio.wait([self.websocket.send(message)])
 
