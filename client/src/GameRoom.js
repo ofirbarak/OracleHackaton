@@ -59,10 +59,7 @@ export default class GameRoom extends React.Component {
                     </Col>
                     <Col>
                         <ListGroup>
-                            <ListGroup.Item>player1</ListGroup.Item>
-                            <ListGroup.Item>player2</ListGroup.Item>
-                            <ListGroup.Item>player3</ListGroup.Item>
-                            <ListGroup.Item>player4</ListGroup.Item>
+                            {this.props.room_users.map((curUser,key)=><ListGroup.Item key={key}>{curUser}</ListGroup.Item>)}
                         </ListGroup>
                     </Col>
                 </Row>
