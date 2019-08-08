@@ -132,7 +132,7 @@ class App extends React.Component {
             case 'add_player_to_room':
                 const temp2 = {}
                 _.forEach(data.players,(cur)=>{
-                    temp2[cur] = {name:cur,numOfCards:0}
+                    temp2[cur] = {name:cur,numOfCards:5}
                 })
                 this.setState({ room_users: temp2});
                 break;
