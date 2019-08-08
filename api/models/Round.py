@@ -81,9 +81,9 @@ class Round:
     async def not_played_in_his_turn(self, player, card=None):
         if card:
             player.get_card_back(card)
-            await player.notify_about_invalid_put_card(card, f"{self.name} didn't play in his turn!")
+            await player.notify_about_invalid_put_card(card, f"{player.name} didn't play in his turn!")
 
-        await player.notify_about_invalid_put_card(card, f"{self.name} is not playing by the rules!")
+        await player.notify_about_invalid_put_card(card, f"{player.name} is not playing by the rules!")
         self.player_draw_card(player)
 
     def round_over(self, player):
