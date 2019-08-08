@@ -78,7 +78,7 @@ class App extends React.Component {
                 })
                 this.setState({ currentPage: 'GameRoom', myDek: initialDek });
                 break;
-            case 'card_put_on_dek':
+            case 'card_put_on_deck':
                 const curCardAsJson = JSON.parse(data.card);
                 const formatedCard = {
                     type: enumToType(curCardAsJson.type),
@@ -112,7 +112,7 @@ class App extends React.Component {
                 
 
                 break;
-            case 'card_taken_from_dek':
+            case 'card_taken_from_deck':
                 if (data.player_name === this.state.player_name) {
                     const curCardAsJson = JSON.parse(data.card);
                     const formatedCard = {
