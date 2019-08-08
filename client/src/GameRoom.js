@@ -42,7 +42,7 @@ export default class GameRoom extends React.Component {
                     {
                         this.props.myDek.map((curCard,key) => (
                             <Col key={key} xs={2} style={{'paddingBottom':'5px'}}>
-                                <PlayingCard onClick={()=>{this.props.placeCard(curCard.type,curCard.number)}} type={curCard.type} number={curCard.number}></PlayingCard>
+                                <PlayingCard onClick={()=>{this.props.placeCard({number:curCard.number,type:curCard.type})}} type={curCard.type} number={curCard.number}></PlayingCard>
                             </Col>
                         ))
                     }
