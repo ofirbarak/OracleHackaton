@@ -124,7 +124,9 @@ class App extends React.Component {
 
                 const temp3 = clone(this.state.room_users)
                 temp3[data.player_name].numOfCards++;
-                this.setState({ room_users: temp3,playedCards:clone(this.state.playedCards).pop() })
+                const ttt = clone(this.state.playedCards)
+                ttt.pop();
+                this.setState({ room_users: temp3,playedCards:ttt })
 
 
                 break;
