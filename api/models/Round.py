@@ -70,7 +70,8 @@ class Round:
     async def reject_play(self, player, card):
         player.get_card_back(card)
         await asyncio.wait(
-            [p.notify_about_take_card_back(card, f"{player.name} took a card back stack", player) for p in self.players])
+            [p.notify_about_take_card_back(card, f"{player.name} took a card back stack", player) for p in
+             self.players])
         await self.player_draw_card(player)
         # TODO: send message that the play was rejected
 
@@ -86,9 +87,13 @@ class Round:
     async def not_played_in_his_turn(self, player, card=None):
         if card:
             player.get_card_back(card)
-            await player.notify_about_invalid_put_card(card, f"{player.name} didn't play in his turn!")
+            await asyncio.wait(
+                [p.notify_about_invalid_put_card(card, f"{player.name} didn't play in his turn!", player) for p in
+                 self.players])
 
-        await player.notify_about_invalid_put_card(card, f"{player.name} is not playing by the rules!")
+        await asyncio.wait(
+            [p.notify_about_invalid_put_card(card, f"{player.name} is not playing by the rules!", player) for p in
+             self.players])
         await self.player_draw_card(player)
 
     def round_over(self, player):
