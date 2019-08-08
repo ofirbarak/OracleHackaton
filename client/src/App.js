@@ -47,7 +47,7 @@ class App extends React.Component {
             ],
             numOfCardsInDeck: 56
         };
-        this.state.socket = new WebSocket('ws://192.168.43.240:6789/');
+        this.state.socket = new WebSocket('ws://10.28.145.223:6789/');
 
         this.handleChange = this.handleChange.bind(this);
         this.createRoom = this.createRoom.bind(this);
@@ -83,34 +83,41 @@ class App extends React.Component {
                 });
                 break;
             case 'card_put_on_deck':
-                const curCardAsJson = JSON.parse(data.card);
-                const formatedCard = {
-                    type: enumToType(curCardAsJson.type),
-                    number: curCardAsJson.number
-                }
-                const playedCardsClone = _.clone(this.state.playedCards)
-                playedCardsClone.push(formatedCard)
+                setTimeout(() => {
+                    const curCardAsJson = JSON.parse(data.card);
+                    const formatedCard = {
+                        type: enumToType(curCardAsJson.type),
+                        number: curCardAsJson.number
+                    }
+                    const playedCardsClone = _.clone(this.state.playedCards)
+                    playedCardsClone.push(formatedCard)
 
-                const temp = clone(this.state.room_users)
-                temp[data.player_name].numOfCards--;
-                if (data.player_name === this.state.playerName) {
-                    const myDekClone = clone(this.state.myDek);
-                    let cardWasRemoved = false;
-                    _.remove(myDekClone, (curCard) => {
-                        if ((!cardWasRemoved) && (curCard.number === formatedCard.number && formatedCard.type === curCard.type)) {
-                            cardWasRemoved = true;
-                            return true
-                        }
-                    })
-                    this.setState({ playedCards: playedCardsClone, room_users: temp, myDek: myDekClone })
-                }
-                else
-                    this.setState({ playedCards: playedCardsClone, room_users: temp })
+                    const temp = clone(this.state.room_users)
+                    temp[data.player_name].numOfCards--;
+                    if (data.player_name === this.state.playerName) {
+                        const myDekClone = clone(this.state.myDek);
+                        let cardWasRemoved = false;
+                        _.remove(myDekClone, (curCard) => {
+                            if ((!cardWasRemoved) && (curCard.number === formatedCard.number && formatedCard.type === curCard.type)) {
+                                cardWasRemoved = true;
+                                return true
+                            }
+                        })
+                        this.setState({ playedCards: playedCardsClone, room_users: temp, myDek: myDekClone })
+                    }
+                    else
+                        this.setState({ playedCards: playedCardsClone, room_users: temp })
+                }, 500);
                 break;
             case 'wrong_move':
-                toast(`${data.message}`)
+                if (data.message) {
+                    toast(`${data.message}`)
+                }
                 break;
             case 'card_taken_from_played_cards':
+                if (data.message) {
+                    toast(`${data.message}`)
+                }
                 const ttt = clone(this.state.playedCards)
                 if (data.player_name === this.state.playerName) {
                     const curCardAsJson = JSON.parse(data.card);
@@ -127,12 +134,15 @@ class App extends React.Component {
                 }
 
                 const temp3 = clone(this.state.room_users)
-                temp3[data.player_name].numOfCards ++;
+                temp3[data.player_name].numOfCards++;
                 this.setState({ room_users: temp3, playedCards: ttt })
 
 
                 break;
             case 'card_taken_from_deck':
+                if (data.message) {
+                    toast(`${data.message}`)
+                }
                 if (data.player_name === this.state.playerName) {
                     const curCardAsJson = JSON.parse(data.card);
                     const formatedCard = {
