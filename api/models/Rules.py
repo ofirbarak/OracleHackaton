@@ -12,7 +12,7 @@ def rule_cards_suit(card, used_stack, player):
             return False, action_unchanged
 
 
-def rule_eight_card(card, used_stack, player):
+def rule_change_color(card, used_stack, player):
     if card.value == 8:
         if card.suit in [Suits.HEARTS, Suits.DIAMONDS]:
             return True, action_change_color_black
@@ -22,14 +22,14 @@ def rule_eight_card(card, used_stack, player):
         return True, action_unchanged
 
 
-def rule_ace_card(card, used_stack, player):
+def rule_skip_turn(card, used_stack, player):
     if card.value == 1:
         return True, action_skip_turn
     else:
         return True, action_unchanged
 
 
-def rule_three_card(card, used_stack, player):
+def rule_change_direction(card, used_stack, player):
     if card.value == 3:
         return True, action_change_direction
     else:
