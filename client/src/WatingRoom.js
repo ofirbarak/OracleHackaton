@@ -61,7 +61,7 @@ class WatingRoom extends React.Component {
 
 WatingRoom.propTypes = {
     classes: PropTypes.object.isRequired,
-    room_users: PropTypes.array.isRequired,
+    room_users: PropTypes.object.isRequired,
     room_name: PropTypes.string.isRequired,
     letsPlay: PropTypes.func.isRequired
 };
