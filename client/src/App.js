@@ -88,14 +88,14 @@ class App extends React.Component {
                 playedCardsClone.push(formatedCard)
 
                 const temp = clone(this.state.room_users)
-                temp[data.player_name] --;
-                this.state.setState({playedCards: playedCardsClone,room_users:temp})
+                temp[data.player_name]--;
+                this.state.setState({ playedCards: playedCardsClone, room_users: temp })
                 break;
             case 'wrong_move':
                 toast(`${data.player_name} ${data.message}`)
                 break;
             case 'card_taken_from_played_cards':
-                if (data.player_name === this.state.player_name) {
+                if (data.player_name === this.state.playerName) {
                     const curCardAsJson = JSON.parse(data.card);
                     const formatedCard = {
                         type: enumToType(curCardAsJson.type),
@@ -105,15 +105,15 @@ class App extends React.Component {
                     myDekClone.push(formatedCard)
                     this.setState({ myDek: myDekClone });
                 }
-                
-                    const temp3 = clone(this.state.room_users)
-                    temp3[data.player_name] ++;
-                    this.state.setState({room_users:temp3})
-                
+
+                const temp3 = clone(this.state.room_users)
+                temp3[data.player_name]++;
+                this.state.setState({ room_users: temp3 })
+
 
                 break;
             case 'card_taken_from_deck':
-                if (data.player_name === this.state.player_name) {
+                if (data.player_name === this.state.playerName) {
                     const curCardAsJson = JSON.parse(data.card);
                     const formatedCard = {
                         type: enumToType(curCardAsJson.type),
@@ -123,18 +123,18 @@ class App extends React.Component {
                     myDekClone.push(formatedCard)
                     this.setState({ myDek: myDekClone });
                 }
-                
-                    const temp1 = clone(this.state.room_users)
-                    temp1[data.player_name] ++;
-                    this.state.setState({room_users:temp1})
-                
+
+                const temp1 = clone(this.state.room_users)
+                temp1[data.player_name]++;
+                this.setState({ room_users: temp1 })
+
                 break;
             case 'add_player_to_room':
                 const temp2 = {}
-                _.forEach(data.players,(cur)=>{
-                    temp2[cur] = {name:cur,numOfCards:5}
+                _.forEach(data.players, (cur) => {
+                    temp2[cur] = { name: cur, numOfCards: 5 }
                 })
-                this.setState({ room_users: temp2});
+                this.setState({ room_users: temp2 });
                 break;
             default:
                 console.error(
@@ -148,7 +148,7 @@ class App extends React.Component {
             action: "create_room",
             name: this.state.playerName
         }));
-        this.setState({ currentPage: "WaitingRoom",roomName:this.state.playerName+' room' });
+        this.setState({ currentPage: "WaitingRoom", roomName: this.state.playerName + ' room' });
     }
 
     pickRoom(roomName) {
@@ -172,8 +172,8 @@ class App extends React.Component {
             action: "put_card",
             room_name: this.state.roomName,
             player_name: this.state.playerName,
-            card:{
-                number:card.number,
+            card: {
+                number: card.number,
                 type: TypeToEnum(card.type)
             }
         }))

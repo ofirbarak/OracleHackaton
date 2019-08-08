@@ -28,7 +28,7 @@ class Round:
         if not self.is_my_turn(player):
             await self.not_played_in_his_turn(player)
         else:
-            self.player_draw_card(player)
+            await self.player_draw_card(player)
             self.forward_turn()
 
     async def play(self, player, card):
