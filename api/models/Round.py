@@ -84,7 +84,7 @@ class Round:
             await player.notify_about_invalid_put_card(card, f"{player.name} didn't play in his turn!")
 
         await player.notify_about_invalid_put_card(card, f"{player.name} is not playing by the rules!")
-        self.player_draw_card(player)
+        await self.player_draw_card(player)
 
     def round_over(self, player):
         # TODO: msg player is the winner, player set new rule

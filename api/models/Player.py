@@ -52,9 +52,10 @@ class Player:
         await asyncio.wait([self.websocket.send(message)])
 
     async def notify_about_invalid_put_card(self, card, text_message):
+
         message = json.dumps({
             "type": "wrong_move",
-            "card": card.to_json(),
+            "card": card.to_json() if card else card,
             "message": text_message,
             "player_name": self.name
         })
