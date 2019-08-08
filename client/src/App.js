@@ -93,7 +93,19 @@ class App extends React.Component {
 
                 const temp = clone(this.state.room_users)
                 temp[data.player_name].numOfCards--;
-                this.setState({ playedCards: playedCardsClone, room_users: temp })
+                if (data.player_name === this.state.playerName) {
+                    const myDekClone = clone(this.state.myDek);
+                    let cardWasRemoved = false;
+                    _.remove(myDekClone, (curCard) => {
+                        if ((!cardWasRemoved) && (curCard.number === formatedCard.number && formatedCard.type === curCard.type)) {
+                            cardWasRemoved = true;
+                            return true
+                        }
+                    })
+                    this.setState({ playedCards: playedCardsClone, room_users: temp, myDek: myDekClone })
+                }
+                else
+                    this.setState({ playedCards: playedCardsClone, room_users: temp })
                 break;
             case 'wrong_move':
                 toast(`${data.player_name} ${data.message}`)
