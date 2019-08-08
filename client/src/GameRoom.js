@@ -31,7 +31,7 @@ export default class GameRoom extends React.Component {
                     </Col>
                     <Col>
                         <ListGroup>
-                            {this.props.room_users.map((curUser,key)=><ListGroup.Item key={key}>{`${curUser.name} have ${curUser.numOfCards} cards`}</ListGroup.Item>)}
+                            {Object.keys(this.props.room_users).map((curUser,key)=><ListGroup.Item key={key}>{`${curUser} have ${this.props.room_users[curUser].numOfCards} cards`}</ListGroup.Item>)}
                         </ListGroup>
                     </Col>
                 </Row>
