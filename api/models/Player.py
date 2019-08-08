@@ -25,9 +25,6 @@ class Player:
     def is_won(self):
         return len(self.hand_cards) == 0
 
-    def define_rule(self):
-        return Rule()
-
     async def notify_about_players_in_room(self, players):
         if players:  # asyncio.wait doesn't accept an empty list
             message = json.dumps({

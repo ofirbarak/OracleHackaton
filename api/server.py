@@ -40,7 +40,7 @@ async def register(websocket):
     await notify_users_about_rooms()
 
 
-async def counter(websocket, path):
+async def mau(websocket, path):
     # register(websocket) sends user_event() to websocket
     await register(websocket)
     try:
@@ -67,6 +67,12 @@ async def counter(websocket, path):
                 room = next((room for room in ROOMS if room.name == room_name), None)
                 await room.start_round()
 
+            elif data["action"] == "put_card":
+                player_name = data["player_name"]
+                card = data["card"]
+                room_name = data["room_name"]
+
+
 
             else:
                 logging.error("unsupported event: {}", data)
@@ -75,7 +81,7 @@ async def counter(websocket, path):
     #     await unregister(websocket)
 
 
-start_server = websockets.serve(counter, "localhost", 6789)
+start_server = websockets.serve(mau, "localhost", 6789)
 
 asyncio.get_event_loop().run_until_complete(start_server)
 asyncio.get_event_loop().run_forever()
