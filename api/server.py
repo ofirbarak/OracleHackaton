@@ -101,7 +101,7 @@ async def mau(websocket, path):
     #     await unregister(websocket)
 
 
-start_server = websockets.serve(mau, "localhost", 6789)
+start_server = websockets.serve(mau, "192.168.43.240", 6789)
 
 asyncio.get_event_loop().run_until_complete(start_server)
 asyncio.get_event_loop().run_forever()

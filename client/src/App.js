@@ -47,7 +47,7 @@ class App extends React.Component {
             ],
             numOfCardsInDeck: 56
         };
-        this.state.socket = new WebSocket('ws://localhost:6789/');
+        this.state.socket = new WebSocket('ws://192.168.43.240:6789/');
 
         this.handleChange = this.handleChange.bind(this);
         this.createRoom = this.createRoom.bind(this);
@@ -108,7 +108,7 @@ class App extends React.Component {
                     this.setState({ playedCards: playedCardsClone, room_users: temp })
                 break;
             case 'wrong_move':
-                toast(`${data.player_name} ${data.message}`)
+                toast(`${data.message}`)
                 break;
             case 'card_taken_from_played_cards':
                 const ttt = clone(this.state.playedCards)
