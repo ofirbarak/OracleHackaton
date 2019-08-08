@@ -9,7 +9,7 @@ import websockets
 
 from models.Card import Card
 from models.Player import Player
-from models.Room import Room
+from models.Room import Room, Suits
 
 logging.basicConfig()
 
@@ -45,6 +45,17 @@ def get_room_by_name(room_name):
     return next((room for room in ROOMS if room.name == room_name), None)
 
 
+def get_enum_from_suit_type(suit_type):
+    if suit_type == 0:
+        return Suits.HEARTS
+    if suit_type == 1:
+        return Suits.SPADES
+    if suit_type == 2:
+        return Suits.DIAMONDS
+    if suit_type == 3:
+        return Suits.CLUBS
+
+
 async def mau(websocket, path):
     # register(websocket) sends user_event() to websocket
     await register(websocket)
@@ -75,7 +86,7 @@ async def mau(websocket, path):
                 card = data["card"]
                 room = get_room_by_name(data["room_name"])
                 player = room.get_player_by_name(player_name)
-                card = Card(card["number"], card["type"])
+                card = Card(card["number"], get_enum_from_suit_type(card["type"]))
                 await room.round.play(player, card)
 
             elif data["action"] == "take_card":

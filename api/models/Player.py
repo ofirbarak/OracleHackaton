@@ -13,9 +13,11 @@ class Player:
         self.hand_cards.append(card)
         return card
 
-    async def played_card(self, card):
-        self.hand_cards.remove(card)
-        await self.notify_about_put_card(card)
+    def played_card(self, card):
+        for c in self.hand_cards:
+            if c == card:
+                self.hand_cards.remove(c)
+                break
 
     def show_hand(self):
         for card in self.hand_cards:
@@ -43,11 +45,11 @@ class Player:
         })
         await asyncio.wait([self.websocket.send(message)])
 
-    async def notify_about_put_card(self, card):
+    async def notify_about_put_card(self, card, player):
         message = json.dumps({
             "type": "card_put_on_deck",
             "card": card.to_json(),
-            "player_name": self.name
+            "player_name": player.name
         })
         await asyncio.wait([self.websocket.send(message)])
 
