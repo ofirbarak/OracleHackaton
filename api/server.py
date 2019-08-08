@@ -75,7 +75,7 @@ async def mau(websocket, path):
                 card = data["card"]
                 room = get_room_by_name(data["room_name"])
                 player = room.get_player_by_name(player_name)
-                card = Card(card.number, card.type)
+                card = Card(card["number"], card["type"])
                 await room.round.play(player, card)
 
             elif data["action"] == "take_card":

@@ -16,8 +16,9 @@ class Round:
     async def start(self):
         for player in self.players:
             player.hand_cards = self.deck.draw_hand()
-        self.used_stack.use_card(self.deck.draw_card())
-        await asyncio.wait([player.notify_about_start_round() for player in self.players])
+        first_card = self.deck.draw_card()
+        self.used_stack.use_card(first_card)
+        await asyncio.wait([player.notify_about_start_round(first_card) for player in self.players])
 
     async def player_draw_card(self, player):
         drawn_card = player.draw_card(self.deck)
@@ -67,7 +68,8 @@ class Round:
 
     async def reject_play(self, player, card):
         player.get_card_back(card)
-        await asyncio.wait([p.notify_about_take_card_back(card, f"{player.name} took a card back stack") for p in self.players])
+        await asyncio.wait(
+            [p.notify_about_take_card_back(card, f"{player.name} took a card back stack") for p in self.players])
         self.player_draw_card(player)
         # TODO: send message that the play was rejected
 
