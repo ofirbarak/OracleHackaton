@@ -5,6 +5,9 @@ import PickRoom from './PickRoom';
 import GameRoom from './GameRoom'
 import WatingRoom from './WatingRoom';
 import openSocket from 'socket.io-client';
+import { toast } from 'react-toastify';
+import clone from 'clone';
+import _ from 'lodash';
 
 const enumToType = (enumName) => {
     if (enumName === 0)
@@ -18,6 +21,18 @@ const enumToType = (enumName) => {
     return undefined
 }
 
+const TypeToEnum = (type) => {
+    if (type === 'heart')
+        return 0
+    if (type === 'spade')
+        return 1
+    if (type === 'diamond')
+        return 2
+    if (type === 'club')
+        return 3
+    return undefined
+}
+
 class App extends React.Component {
     constructor(props) {
         super(props);
@@ -25,8 +40,12 @@ class App extends React.Component {
             currentPage: 'HomePage',
             rooms: [],
             room_users: [],
-            handCards: [],
-            roomName: undefined
+            roomName: undefined,
+            myDek: [],
+            playedCards: [
+                { type: 'heart', number: 0 }
+            ],
+            numOfCardsInDeck: 56
         };
         this.state.socket = new WebSocket('ws://localhost:6789/');
 
@@ -50,17 +69,72 @@ class App extends React.Component {
                 this.setState({ rooms: data.rooms });
                 break;
             case 'game_started':
-                const handCards = data.hand_cards.map((curCard) => {
+                const initialDek = data.hand_cards.map((curCard) => {
                     const curCardAsJson = JSON.parse(curCard);
                     return {
                         type: enumToType(curCardAsJson.type),
                         number: curCardAsJson.number
                     }
                 })
-                this.setState({ currentPage: 'GameRoom', handCards });
+                this.setState({ currentPage: 'GameRoom', myDek: initialDek });
+                break;
+            case 'card_put_on_dek':
+                const curCardAsJson = JSON.parse(data.card);
+                const formatedCard = {
+                    type: enumToType(curCardAsJson.type),
+                    number: curCardAsJson.number
+                }
+                const playedCardsClone = _.clone(this.state.playedCards)
+                playedCardsClone.push(formatedCard)
+
+                const temp = clone(this.state.room_users)
+                temp[data.player_name] --;
+                this.state.setState({playedCards: playedCardsClone,room_users:temp})
+                break;
+            case 'wrong_move':
+                toast(`${data.player_name} ${data.message}`)
+                break;
+            case 'card_taken_from_played_cards':
+                if (data.player_name === this.state.player_name) {
+                    const curCardAsJson = JSON.parse(data.card);
+                    const formatedCard = {
+                        type: enumToType(curCardAsJson.type),
+                        number: curCardAsJson.number
+                    }
+                    const myDekClone = _.clone(this.state.myDek)
+                    myDekClone.push(formatedCard)
+                    this.setState({ myDek: myDekClone });
+                }
+                
+                    const temp3 = clone(this.state.room_users)
+                    temp3[data.player_name] ++;
+                    this.state.setState({room_users:temp3})
+                
+
+                break;
+            case 'card_taken_from_dek':
+                if (data.player_name === this.state.player_name) {
+                    const curCardAsJson = JSON.parse(data.card);
+                    const formatedCard = {
+                        type: enumToType(curCardAsJson.type),
+                        number: curCardAsJson.number
+                    }
+                    const myDekClone = _.clone(this.state.myDek)
+                    myDekClone.push(formatedCard)
+                    this.setState({ myDek: myDekClone });
+                }
+                
+                    const temp1 = clone(this.state.room_users)
+                    temp1[data.player_name] ++;
+                    this.state.setState({room_users:temp1})
+                
                 break;
             case 'add_player_to_room':
-                this.setState({ room_users: data.players });
+                const temp2 = {}
+                _.forEach(data.players,(cur)=>{
+                    temp2[cur] = {name:cur,numOfCards:0}
+                })
+                this.setState({ room_users: temp2});
                 break;
             default:
                 console.error(
@@ -90,6 +164,25 @@ class App extends React.Component {
         this.state.socket.send(JSON.stringify({
             action: "start_game",
             room_name: this.state.roomName
+        }))
+    }
+
+    putCard = (card) => {
+        this.state.socket.send(JSON.stringify({
+            action: "put_card",
+            room_name: this.state.roomName,
+            player_name: this.state.playerName,
+            card:{
+                number:card.number,
+                type: TypeToEnum(card.type)
+            }
+        }))
+    }
+    takeCard = () => {
+        this.state.socket.send(JSON.stringify({
+            action: "take_card",
+            room_name: this.state.roomName,
+            player_name: this.state.playerName
         }))
     }
 
@@ -125,8 +218,13 @@ class App extends React.Component {
                 {this.state.currentPage == 'GameRoom' ?
                     <div>
                         <GameRoom
-                            handCards={this.state.handCards}
+                            myDek={this.state.myDek}
+                            playedCards={this.state.playedCards}
+                            numOfCardsInDeck={this.state.numOfCardsInDeck}
+                            takeCardFromDek={this.takeCard}
+                            placeCard={this.putCard}
                             room_users={this.state.room_users}
+                            playerName={this.state.playerName}
                             changePage={this.handleChange('currentPage')} />
                     </div> :
                     null}
