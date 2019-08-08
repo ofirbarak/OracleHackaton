@@ -28,7 +28,7 @@ class Round:
 
     async def draw(self, player):
         if not self.is_my_turn(player):
-            await self.played_not_in_his_turn(player)
+            await self.drawn_not_in_his_turn(player)
         else:
             await self.player_draw_card(player)
             self.forward_turn()
@@ -92,8 +92,7 @@ class Round:
         await asyncio.wait(
             [p.notify_about_take_card_back(card, f"{player.name} took a card back from stack", player) for p in
              self.players])
-
-
+        await self.player_draw_card(player)
 
     async def drawn_not_in_his_turn(self, player):
         await asyncio.wait(
