@@ -3,6 +3,7 @@ import './App.css';
 import HomePage from './HomePage';
 import PickRoom from './PickRoom';
 import WatingRoom from './WatingRoom';
+import Chat from './Chat';
 import openSocket from 'socket.io-client';
 
 
@@ -16,12 +17,14 @@ class App extends React.Component {
             { name: "room3", count: 2 },
             { name: "room4", count: 5 }],
             room_users: ['dsdsds', 'sdsd', 'sfsdf', 'sdfsdf', 'sdfsdf'],
+            chat: { messages: [] }
         };
         this.state.socket = new WebSocket('ws://localhost:6789/');
 
         this.handleChange = this.handleChange.bind(this);
         this.createRoom = this.createRoom.bind(this);
         this.pickRoom = this.pickRoom.bind(this);
+
 
         this.state.socket.onmessage = this.handleServerMessages;
     }
@@ -40,6 +43,9 @@ class App extends React.Component {
                 break;
             case 'add_player_to_room':
                 this.setState({ room_users: data.players });
+                break;
+            case 'send_message_by_player':
+                this.setState({ chat_messages: data.message });
                 break;
             default:
                 console.error(
@@ -68,7 +74,7 @@ class App extends React.Component {
     render() {
         return (
             <div>
-                {this.state.currentPage == 'HomePage' ?
+                {this.state.currentPage === 'HomePage' ?
                     <div>
                         <div className="background-image"></div>
                         <div className="bg-text">
@@ -79,21 +85,23 @@ class App extends React.Component {
                         </div>
                     </div> :
                     null}
-                {this.state.currentPage == 'pickRoom' ?
+                {this.state.currentPage === 'pickRoom' ?
                     <div>
                         <PickRoom
                             rooms={this.state.rooms}
-                            pickRoom={this.pickRoom}/>
+                            pickRoom={this.pickRoom} />
                     </div> :
                     null}
-                {this.state.currentPage == 'WaitingRoom' ?
+                {this.state.currentPage === 'WaitingRoom' ?
                     <div>
                         <WatingRoom
                             room_users={this.state.room_users}
-                            changePage={this.handleChange('currentPage')}/>
+                            changePage={this.handleChange('currentPage')} />
                     </div> :
                     null}
-
+                <div>
+                    <Chat />
+                </div>
             </div>
         );
     }

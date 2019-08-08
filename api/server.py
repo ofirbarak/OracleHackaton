@@ -40,6 +40,7 @@ async def register(websocket):
     LONELY_USERS.append(websocket)
     await notify_users_about_rooms()
 
+CHAT_LIST = list()
 
 async def counter(websocket, path):
     # register(websocket) sends user_event() to websocket
@@ -59,12 +60,8 @@ async def counter(websocket, path):
                 room_name = data["room_name"]
                 room = next((x for x in ROOMS if x.name == room_name), None)
                 await room.add_player(player)
-
-
-                await rooms_event()
-            elif data["action"] == "chat_message":
+            elif data["action"] == "send_chat_message":
                 message = data["message_text"]
-                await notify_state()
             else:
                 logging.error("unsupported event: {}", data)
     finally:
@@ -75,29 +72,4 @@ async def counter(websocket, path):
 start_server = websockets.serve(counter, "localhost", 6789)
 
 asyncio.get_event_loop().run_until_complete(start_server)
-asyncio.get_event_loop().run_forever()
-
-CHAT_LIST = list()
-async def chat_counter(websocket, path):
-    # register(websocket) sends user_event() to websocket
-    await register(websocket)
-    try:
-        await websocket.send(state_event())
-        async for message in websocket:
-            data = json.loads(message)
-            if data["action"] == "create_chat":
-                chat = Chat(data["team_name"], websocket)
-                CHAT_LIST.append(chat)
-                await rooms_event()
-            elif data["action"] == "get_message":
-                message = data["message_text"]
-                await notify_state()
-            else:
-                logging.error("unsupported event: {}", data)
-    finally:
-        await unregister(websocket)
-
-start_chat_server = websockets.serve(chat_counter, "localhost", 6666)
-
-asyncio.get_event_loop().run_until_complete(start_chat_server)
 asyncio.get_event_loop().run_forever()

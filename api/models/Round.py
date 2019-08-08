@@ -2,13 +2,14 @@ from models.Deck import Deck, UsedStack
 
 
 class Round:
-    def __init__(self, players, rules):
+    def __init__(self, players, rules, chat):
         self.players = players
         self.rules = rules
         self.deck = Deck()
         self.used_stack = UsedStack()
         self.is_clockwise = True
-        self.turn = 0
+        self.turn = 0,
+        self.chat = chat
 
     def start(self):
         for player in self.players:
