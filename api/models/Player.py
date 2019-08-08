@@ -8,10 +8,10 @@ class Player:
         self.hand_cards = []
         self.websocket = websocket
 
-    async def draw_card(self, deck):
+    def draw_card(self, deck):
         card = deck.draw_card()
-        await self.notify_about_draw_card(card)
         self.hand_cards.append(card)
+        return card
 
     async def played_card(self, card):
         self.hand_cards.remove(card)
@@ -23,7 +23,6 @@ class Player:
 
     def get_card_back(self, card):
         self.hand_cards.append(card)
-        self.notify_about_take_card_back(card, f"{self.name} took a card back stack")
 
     def is_won(self):
         return len(self.hand_cards) == 0
@@ -70,10 +69,10 @@ class Player:
         })
         await asyncio.wait([self.websocket.send(message)])
 
-    async def notify_about_draw_card(self, card):
+    async def notify_about_draw_card(self, card, player_drawn):
         message = json.dumps({
             "type": "card_taken_from_deck",
             "card": card.to_json(),
-            "player_name": self.name
+            "player_name": player_drawn.name
         })
         await asyncio.wait([self.websocket.send(message)])

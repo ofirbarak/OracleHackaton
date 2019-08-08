@@ -20,7 +20,8 @@ class Round:
         await asyncio.wait([player.notify_about_start_round() for player in self.players])
 
     async def player_draw_card(self, player):
-        await player.draw_card(self.deck)
+        drawn_card = player.draw_card(self.deck)
+        await asyncio.wait([p.notify_about_draw_card(drawn_card, player) for p in self.players])
         if self.deck.is_empty():
             self.used_stack.recycle_used_stack(self.deck)
 
@@ -39,7 +40,7 @@ class Round:
             if self.is_valid_play(player, card):
                 self.accept_play(player, card)
             else:
-                self.reject_play(player, card)
+                await self.reject_play(player, card)
 
     def is_valid_play(self, player, card):
         actions = []
@@ -64,8 +65,9 @@ class Round:
             self.forward_turn()
             self.used_stack.use_card(card)
 
-    def reject_play(self, player, card):
+    async def reject_play(self, player, card):
         player.get_card_back(card)
+        await asyncio.wait([p.notify_about_take_card_back(card, f"{player.name} took a card back stack") for p in self.players])
         self.player_draw_card(player)
         # TODO: send message that the play was rejected
 
