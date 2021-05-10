@@ -7,7 +7,7 @@
     "@types/react-bootstrap": "^0.32.19",
     "bootstrap": "^4.3.1",
     "clone": "^2.1.2",
-    "lodash": "^4.17.15",
+    "lodash": "^4.17.21",
     "material-ui": "^0.20.2",
     "react": "^16.8.6",
     "react-bootstrap": "^1.0.0-beta.10",
